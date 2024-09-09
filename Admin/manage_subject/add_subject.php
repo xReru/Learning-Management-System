@@ -14,36 +14,6 @@
             font-family: 'Arial', sans-serif;
             text-decoration: none;
         }
-
-        /* Header Styles */
-        .header {
-            background: linear-gradient(45deg, #b40404, #ff7f7f);
-            background-size: 400% 400%;
-            color: white;
-            line-height: 70px;
-            padding: 0 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            animation: gradientBG 10s ease infinite;
-            transition: background 0.3s ease;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .header a {
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
-
-        .header:hover {
-            background: linear-gradient(45deg, #ff7f7f, #b40404);
-        }
-
         /* Logout Button Styles */
         .logout-button {
             background-color: white;
@@ -62,39 +32,6 @@
             box-shadow: 0 0 15px rgba(180, 4, 4, 0.5);
         }
 
-        /* Sidebar Styles */
-        aside {
-            background-color: #f5f5f5;
-            width: 16%;
-            height: 100%;
-            position: fixed;
-            top: 70px;
-            left: 0;
-            padding-top: 5%;
-            text-align: center;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
-            z-index: 999;
-            overflow-y: auto;
-        }
-
-        ul li {
-            list-style: none;
-            padding-bottom: 20px;
-            font-size: 16px;
-        }
-
-        ul li a {
-            color: #333;
-            font-weight: bold;
-            transition: color 0.3s ease;
-            display: block;
-            padding: 10px 20px;
-        }
-
-        ul li a:hover {
-            color: #ff0000;
-        }
 
         /* Main Content Area */
         .main-content {
@@ -183,22 +120,6 @@
                 padding: 80px 15px 15px;
             }
 
-            aside {
-                width: 100%;
-                height: auto;
-                position: relative;
-                padding-top: 0;
-                top: 0;
-            }
-
-            ul li {
-                display: inline-block;
-                padding: 10px;
-            }
-
-            ul li a {
-                padding: 5px 10px;
-            }
 
             .header {
                 flex-direction: column;
@@ -207,29 +128,12 @@
             }
         }
     </style>
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 
 <body>
-    <header class="header">
-        <a href="#">Admin Dashboard</a>
-        <div class="logout">
-            <form action="logout.php" method="post">
-                <button type="submit" class="logout-button">Logout</button>
-            </form>
-        </div>
-    </header>
-
-    <aside>
-        <ul>
-            <li><a href="dashboard.php">Dashboard</a></li>
-            <li><a href="account.php">Manage accounts</a></li>
-            <li><a href="../admin/course.php">Manage courses</a></li>
-            <li><a href="class.php">Manage classes</a></li>
-            <li><a href="groupchat.php">Manage group chats</a></li>
-            <li><a href="events.php">Manage events</a></li>
-            <li><a href="announcement.php">Manage announcements</a></li>
-        </ul>
-    </aside>
+<form method="POST" action="navs/nav.php">
+<?php include_once 'navs/nav.php'; ?>
 
     <div class="main-content">
         <h1>Add New Subject</h1>
@@ -261,7 +165,7 @@
 
         <?php
     // Connect to database
-    include __DIR__ . '/config.php';
+    include __DIR__ . '/connect.php';
 
     // Check connection
     if (!$conn) {

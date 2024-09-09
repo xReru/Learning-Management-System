@@ -1,23 +1,32 @@
+// remove_subject.php
 <?php
-// Connect to database
-include __DIR__ . '/config.php';
+include 'connect.php';
 
-// Check connection
 if (!$conn) {
-  die("Connection failed: " . mysqli_connect_error());
+    die("Connection failed: " . mysqli_connect_error());
 }
 
+if (isset($_GET['id'])) {
+    $subID = mysqli_real_escape_string($conn, $_GET['id']);
+    
+    // Change the table to tbl_subject
+    $sql = "DELETE FROM tbl_subject WHERE subID = ?";
 
-$subID = $_GET["id"];
+    if ($stmt = mysqli_prepare($conn, $sql)) {
+        mysqli_stmt_bind_param($stmt, "i", $subID);
 
-$sql = "DELETE FROM tbl_subject WHERE subID = '$subID'";
-if (mysqli_query($conn, $sql)) {
-  echo "<script>alert('Subject removed successfully!')</script>";
+        if (mysqli_stmt_execute($stmt)) {
+            header("Location: manage_subject.php?message=Subject removed successfully");
+        } else {
+            echo "Error executing query: " . mysqli_error($conn);
+        }
+        mysqli_stmt_close($stmt);
+    } else {
+        echo "Error preparing statement: " . mysqli_error($conn);
+    }
 } else {
-  echo "Error removing subject: " . mysqli_error($conn);
+    echo "No subject ID specified.";
 }
 
-// Close connection
 mysqli_close($conn);
-header("refresh:0;url=manage_subject.php");
-exit;
+?>
