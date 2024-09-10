@@ -54,13 +54,14 @@ const cancelEditBtn = document.getElementById('cancelEditBtn');
 const saveEditSubjectBtn = document.getElementById('saveEditSubjectBtn');
 
 function openEditModal(subject) {
-    document.getElementById('edit_subject_id').value = subject.subID;
-    document.getElementById('edit_subject_name').value = subject.subject;
-    document.getElementById('edit_subject_code').value = subject.subject_code;
-    document.getElementById('edit_grade_level').value = subject.grade_level;
+    document.getElementById('edit_subject_id').value = subject.subID;  
+    document.getElementById('edit_subject_name').value = subject.subject;  
+    document.getElementById('edit_subject_code').value = subject.subject_code;  
+    document.getElementById('edit_grade_level').value = subject.grade_level;  
 
     editSubjectModal.style.display = 'flex';
 }
+
 
 
 function closeEditModal() {
@@ -72,36 +73,30 @@ closeEditModalBtn.addEventListener('click', closeEditModal);
 cancelEditBtn.addEventListener('click', closeEditModal);
 
 
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('saveEditSubjectBtn').addEventListener('click', function() {
-        const subjectId = document.getElementById('edit_subject_id').value;
-        const subjectName = document.getElementById('edit_subject_name').value;
-        const subjectCode = document.getElementById('edit_subject_code').value;
-        const gradeLevel = document.getElementById('edit_grade_level').value;
+document.getElementById('saveEditSubjectBtn').addEventListener('click', function() {
+    
+    const subjectId = document.getElementById('edit_subject_id').value;
+    const subjectName = document.getElementById('edit_subject_name').value;
+    const subjectCode = document.getElementById('edit_subject_code').value;
+    const gradeLevel = document.getElementById('edit_grade_level').value;
 
-        if (subjectName && subjectCode && gradeLevel) {
-            const formData = new FormData();
-            formData.append('subject_id', subjectId);
-            formData.append('subject', subjectName);
-            formData.append('subject_code', subjectCode);
-            formData.append('grade_level', gradeLevel);
+    const formData = new FormData();
+    formData.append('subject_id', subjectId);
+    formData.append('subject_name', subjectName);
+    formData.append('subject_code', subjectCode);
+    formData.append('grade_level', gradeLevel);
 
-            fetch('submit_subject.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.text())
-            .then(data => {
-                console.log(data);
-                alert('Subject updated successfully!');
-                location.reload();
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        } else {
-            alert('Please fill in all the fields.');
-        }
+    fetch('update_subject.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log(data);
+        location.reload();
+    })
+    .catch(error => {
+        console.error('Error:', error);
     });
 });
 
@@ -140,4 +135,5 @@ window.onclick = function (event) {
         closeRemoveConfirmationModal();
     }
 }
+
 
