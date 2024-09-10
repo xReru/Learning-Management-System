@@ -26,7 +26,6 @@ document.getElementById('saveSubjectBtn').onclick = function () {
     var gradeLevel = document.getElementById('grade_level').value;
 
     if (subjectName && gradeLevel && subjectCode) {
-
         var formData = new FormData();
         formData.append('subject_name', subjectName);
         formData.append('subject_code', subjectCode);
