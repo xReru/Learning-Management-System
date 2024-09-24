@@ -191,7 +191,9 @@ if (!$result) {
 </head>
 <body>
 
+<form action="logout.php" method="post">
 <?php include_once 'navs/nav.php'; ?>
+    </form>
 
 <div class="announcement-container">
     <h1 class="texts">Latest Announcements</h1>

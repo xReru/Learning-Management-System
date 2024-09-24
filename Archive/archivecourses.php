@@ -41,9 +41,9 @@ tr:nth-child(even) {
 }
     </style>
 <body>
-<form method="POST" action="navs/nav.php">
+<form action="logouts.php" method="post">
 <?php include_once 'van.php'; ?>
-</form>
+    </form>
 
     <div class="main-content">
         <div class="header-content">

@@ -40,9 +40,9 @@ tr:nth-child(even) {
 
 
 
-<form method="POST" action="navs/nav.php">
+<form action="logouts.php" method="post">
 <?php include_once 'van.php'; ?>
-</form>
+    </form>
     <div class="main-content">
 
     <div class="header-content">

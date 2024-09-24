@@ -1,65 +1,6 @@
 <?php
 include 'connect.php';
-if(isset($_POST['add']) && isset($_FILES['fileToUpload'])){
-	
-	echo "<pre>";
-	print_r($_FILES['fileToUpload']);
-	echo "</pre>";
-	//$sql1 = "Insert into tbl_aannouncements (e_name,e_action,e_date) values ('$name','Adding Announcement',NOW())";
-	//$result1 = $config->query($sql1);
-	$img_name = $_FILES['fileToUpload']['name'];
-	$img_size = $_FILES['fileToUpload']['size'];
-	$tmp_name = $_FILES['fileToUpload']['tmp_name'];
-	$error = $_FILES['fileToUpload']['error'];
 
-
-
-if ($error === 0) {
-	if ($img_size > 12500000) {
-		$em = "Sorry, your file is too large.";
-		header("Location: announceview?error=$em");
-	}else {
-		$img_ex = pathinfo($img_name, PATHINFO_EXTENSION);
-		$img_ex_lc = strtolower($img_ex);
-
-		$allowed_exs = array("jpg", "jpeg", "png"); 
-
-		if (in_array($img_ex_lc, $allowed_exs)) {
-			$new_img_name = uniqid("IMG-", true).'.'.$img_ex_lc;
-			$img_upload_path = '../uploads/'.$new_img_name;
-			move_uploaded_file($tmp_name, $img_upload_path);
-
-			// Insert into Database
-			$create_title = $_POST['create_title'];
-            $create_description = $_POST['create_description'];
-			$create_date = $_POST['create_date'];
-			$sql = "Insert into tbl_announcements (title,description,announcement_date, image) values  
-			('$create_title','$create_description', $create_date, '$new_img_name')";
-			$insert = $conn->query($sql);
-			header("Location: announceview.php");
-		}else {
-			$em = "You can't upload files of this type";
-			header("Location: addannouncement.php?error=$em");
-		}
-	}
-
-// Display status message
-echo $statusMsg;
-if($insert == True){
-?>
-<script>
-alert("Successfully Added")
-
-</script>
-
-<?php
-header("refresh:0;url= addannouncement.php");
-}else{
-	echo $config->error;
-}
-  
-}
-}
 
 $result = $conn->query("SELECT * FROM tbl_announcements");
 $events = [];
@@ -234,7 +175,10 @@ $conn->close();
 </head>
 <body>
 
+<form action="logout.php" method="post">
 <?php include_once 'navs/nav.php'; ?>
+    </form>
+
 
 
 
@@ -242,7 +186,7 @@ $conn->close();
     <div class="modal-content">
         <span class="close" data-modal="createModal">&times;</span>
         <h2>Add Announcement</h2>
-        <form method="POST" action="addannouncement.php" enctype="multipart/form-data"> 
+        <form method="POST" action="announceadd.php" enctype="multipart/form-data"> 
             <label for="create_title">Title:</label>
             <input type="text" id="create_title" name="create_title" required><br>
 
@@ -252,17 +196,14 @@ $conn->close();
             <label for="create_date">Date:</label>
             <input type="date" id="create_date" name="create_date" required><br>
 
-    
             <label for="fileToUpload">Upload Image:</label>
             <input type="file" id="fileToUpload" name="fileToUpload" accept="image/*"><br>
 
-            <button type="submits" name="add">Create Announcement</button>
+            <button type="submit" name="add">Create Announcement</button>
         </form>
     </div>
 </div>
 
-    </div>
-</div>
 
 
 <div class="modal" id="choiceModal">

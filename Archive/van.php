@@ -9,8 +9,8 @@
     <header class="header">
         <a href="#">Archive Dashboard</a>
         <div class="logout">
-            <form action="logout.php" method="post">
-                <button type="submit" name='logout' class="logout-button">Logout</button>
+            <form action="logouts.php" method="post">
+                <button type="submit" name='logouts' class="logout-button">Logout</button>
         </div>
     </header>
     <aside class="sidebar">

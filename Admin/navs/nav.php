@@ -71,12 +71,7 @@
                 Archive
             </a>
         </li>
-        <li >
-            <a href="" class="nav-link">
-                <img src="../photos/archive.png" alt="Announcements Icon" class="nav-icon">
-                Archive
-            </a>
-        </li>
+     
     </ul>
 </aside>
 
