@@ -2,18 +2,7 @@
 include "../connect.php";
 
 
-if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header("refresh:0; ../login.php");
-    exit;
-} else if (isset($_SESSION['AID'])) {
-    $userid = $_SESSION['AID'];
-    
-    $getrecord = mysqli_query($conn, "SELECT * FROM tbl_admin WHERE AID ='$userid'");
-    while ($rowedit = mysqli_fetch_assoc($getrecord)) {
-        $type = $rowedit['Role'];
-        $name = $rowedit['lname']." ".$rowedit['lname'];
-    }
-}
+
 
 
             if (isset($_POST['category'])) {

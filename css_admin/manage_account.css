@@ -17,11 +17,7 @@ body {
     margin-left:23%;
 }
 
-p {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 20px;
-    text-align: center;
+text-align: center;
 }
 
 .filter-container {

@@ -24,6 +24,9 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     <link rel="icon" href="../images/logasac.png">
     <link rel="stylesheet" href="../css_admin/manage_account.css">
 
+
+
+
 </head>
 <body>
 
