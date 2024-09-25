@@ -86,8 +86,9 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                     <label for="password">Password:</label>
                     <input type="password" id="password" name="password" required>
 
-                    <label for="Role">Role:</label>
-                    <input type="Role" id="Role" name="Role" value="admin" required readonly>
+                    <select id ="Roles" name="Roles" value="Admin" hidden>
+                                        <option value="Admin">Admin</option>
+                                    </select>
                     <button type="submit">Add Admin</button>
                 </form>
             </div>

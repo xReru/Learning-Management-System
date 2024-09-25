@@ -199,7 +199,7 @@ $conn->close();
             <label for="fileToUpload">Upload Image:</label>
             <input type="file" id="fileToUpload" name="fileToUpload" accept="image/*"><br>
 
-            <button type="submit" name="add">Create Announcement</button>
+            <button type="submits" name="add">Create Announcement</button>
         </form>
     </div>
 </div>

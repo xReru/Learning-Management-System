@@ -17,20 +17,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     $username = isset($_POST['username']) ? trim(htmlspecialchars($_POST['username'])) : '';
     $email = isset($_POST['email']) ? trim(htmlspecialchars($_POST['email'])) : '';
     $password = isset($_POST['password']) ? trim(htmlspecialchars($_POST['password'])) : '';
+    $Roles = isset($_POST['Roles']) ? trim(htmlspecialchars($_POST['Roles'])) : '';
 
     // Encrypt the password using bcrypt
     $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
     // Prepare the SQL statement
-    $sql = "INSERT INTO tbl_admin (fname, lname, phone, email, username, password) VALUES (?,?,?,?,?,?)";
+    $sql = "INSERT INTO tbl_admin (fname, lname, phone, email, username, password, Role) VALUES (?,?,?,?,?,?,?)";
     $stmt = $conn->prepare($sql);
     
    if($stmt) 
    {
-        // Bind the input data, including the hashed password
-        $stmt->bind_param("ssisss", $first_name, $last_name, $phone_number, $email, $username, $hashed_password);
+
+$stmt->bind_param("ssissss", $first_name, $last_name, $phone_number, $email, $username, $hashed_password, $Roles);
         
-        // Execute the statement
+       
         if ($stmt->execute()) 
         {
             echo '<script>alert("Successfully Added"); 

@@ -13,6 +13,7 @@
                 <button type="submit" name='logout' class="logout-button">Logout</button>
         </div>
     </header>
+    
     <aside class="sidebar">
     <ul class="nav-list">
 
@@ -71,7 +72,7 @@
                 Archive
             </a>
         </li>
-     
+        <br>
     </ul>
 </aside>
 
