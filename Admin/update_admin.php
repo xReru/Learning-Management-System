@@ -1,83 +1,29 @@
 <?php
-	include "connect.php";
+include 'connect.php';
 
-	$id = $_GET['id'];
-	$sql="SELECT * FROM tbl_admin  WHERE Aid = '$id'
-	";
-	$result = $conn->query($sql);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $AID = intval($_POST['AID']);
+	$admin_id = intval($_POST['adminID']);
+    $first_name = $_POST['first_name'];
+    $last_name = $_POST['last_name'];
+	$username = $_POST['admin_username'];
+    $email = $_POST['email'];
+    $phone_number = intval($_POST['phone_number']);
 
-	$row = $result->fetch_assoc();
+    $sql = "UPDATE tbl_admin SET Admin_ID = ?, fname = ?, lname = ?, username = ?, email = ?, phone = ? WHERE Aid = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("issssii", $admin_id, $first_name, $last_name, $username, $email, $phone_number, $AID);
+    
+    if ($stmt->execute()) {
+        // Redirect or respond with success message
+        header("Location: manage_account.php"); // Change this to your success page
+    } else {
+        // Handle errors
+        echo "Error updating record: " . $conn->error;
+    }
 
-	$Aid = $row ['Aid'];
-	$fname = $row ['fname'];
-	$lname = $row ['lname'];
-	$lname = $row ['phone'];
-	$username = $row ['username'];
-	$email = $row ['email'];
-    $admin_id = $row['Admin_ID'];
-    $password = $row ['password'];
-    $role = $row['Role'];
+    $stmt->close();
+}
 
-		echo $conn->error;
-
-?>
-<html>
-	<head>
-		<link rel="stylesheet" type="text/css" href="../css_admin/update_stud.css">
-	</head>
-		<body>
-			<form method = "POST" action="update_admin.php">
-                Admin ID:
-				<input type="text" name= "admin_id" value="<?php echo  $admin_id; ?>">
-
-				<br>
-				First Name:
-				<input type="text" name= "firstname" value="<?php echo $fname; ?>">
-				<br>
-				Last Name:
-				<input type="text" name= "lastname" value="<?php echo  $lname; ?>">
-				<br>
-				Username:
-				<input type="text" name= "username" value="<?php echo  $username; ?>">
-				<br>
-				Email:
-				<input type="text" name= "email" value="<?php echo  $email; ?>">
-				<br>
-                Role:
-				<input type="text" name= "role" value="<?php echo  $role; ?>">
-
-				<br>
-				<input type="submit" name= "update" value="update">
-			</form>
-		</body>
-
-</html>
-<?php
-include "connect.php";
-
-		if(isset($_POST['update']))
-		{
-		$ids = $_POST['ids'];
-		$firstname = $_POST['firstname'];
-		$lastname = $_POST['lastname'];
-		$addresses = $_POST['addresses'];
-		$email = $_POST['email'];
-
-		$sql = "UPDATE tbl_parent SET first_name ='$firstname', last_name ='$lastname', address= '$addresses' , email='$email' 
-		WHERE PID ='$ids'";
-
-		$result = $conn->query($sql);
-
-		if($result == True)
-		{
-		?>
-		<?php
-		header("refresh:0;url=manage_account.php");
-		}
-		else
-		{
-			echo $conn->error;
-		}
-	}
-?>
+$conn->close();
 

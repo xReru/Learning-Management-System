@@ -1,76 +1,29 @@
 <?php
-	include "connect.php";
+include 'connect.php';
 
-	$PID = $_GET['id'];
-	$sql="SELECT * FROM tbl_parent WHERE PID = '$PID'
-	";
-	$result = $conn->query($sql);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $PID = intval($_POST['PID']);
+	$parent_id = intval($_POST['parentID']);
+    $first_name = $_POST['first_name'];
+    $last_name = $_POST['last_name'];
+	$address = $_POST['parent_address'];
+    $email = $_POST['email'];
+    $phone_number = intval($_POST['phone_number']);
 
-	$row = $result->fetch_assoc();
+    $sql = "UPDATE tbl_parent SET parentID = ?, first_name = ?, last_name = ?, address = ?, email = ?, phone_number = ? WHERE PID = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("issssii", $parent_id, $first_name, $last_name, $address, $email, $phone_number, $PID);
+    
+    if ($stmt->execute()) {
+        // Redirect or respond with success message
+        header("Location: manage_account.php"); // Change this to your success page
+    } else {
+        // Handle errors
+        echo "Error updating record: " . $conn->error;
+    }
 
-	$studID = $row ['PID'];
-	$fname = $row ['first_name'];
-	$lname = $row ['last_name'];
-	$lname = $row ['phone_number'];
-	$address = $row ['address'];
-	$email = $row ['email'];
+    $stmt->close();
+}
 
-		echo $conn->error;
-
-?>
-<html>
-	<head>
-		<link rel="stylesheet" type="text/css" href="../css_admin/update_stud.css">
-	</head>
-		<body>
-			<form method = "POST" action="update_parent.php">
-				Parent ID:
-				<input type= "text" name= "ids" value="<?php echo $studID; ?>" readonly>
-				<br>
-				First Name:
-				<input type="text" name= "firstname" value="<?php echo $fname; ?>">
-				<br>
-				Last Name:
-				<input type="text" name= "lastname" value="<?php echo  $lname; ?>">
-				<br>
-				Address:
-				<input type="text" name= "addresses" value="<?php echo  $address; ?>">
-				<br>
-				Email:
-				<input type="text" name= "email" value="<?php echo  $email; ?>">
-
-				<br>
-				<input type="submit" name= "update" value="update">
-			</form>
-		</body>
-
-</html>
-<?php
-include "connect.php";
-
-		if(isset($_POST['update']))
-		{
-		$ids = $_POST['ids'];
-		$firstname = $_POST['firstname'];
-		$lastname = $_POST['lastname'];
-		$addresses = $_POST['addresses'];
-		$email = $_POST['email'];
-
-		$sql = "UPDATE tbl_parent SET first_name ='$firstname', last_name ='$lastname', address= '$addresses' , email='$email' 
-		WHERE PID ='$ids'";
-
-		$result = $conn->query($sql);
-
-		if($result == True)
-		{
-		?>
-		<?php
-		header("refresh:0;url=manage_account.php");
-		}
-		else
-		{
-			echo $conn->error;
-		}
-	}
-?>
+$conn->close();
 

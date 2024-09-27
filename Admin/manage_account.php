@@ -1,7 +1,7 @@
 <?php
 include "connect.php";
-session_start();
-
+//session_start();
+/* 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header("refresh:0; ../login.php");
     exit;
@@ -13,7 +13,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         $type = $rowedit['Role'];
         $name = $rowedit['lname']." ".$rowedit['lname'];
     }
-}
+}*/
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -99,6 +99,9 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                 <span class="close-student">&times;</span>
                 <h2>Add Student Information</h2>
                 <form action="add_student.php" method="POST">
+                    <label for="student_id">Student ID:</label>
+                    <input type="text" id="student_id" name="student_id" required>
+
                     <label for="first_name">First Name:</label>
                     <input type="text" id="first_name" name="first_name" required>
                     
@@ -114,11 +117,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                     <label for="email">E-mail:</label>
                     <input type="email" id="email" name="email" required>
                     
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required>
-                    
-                    <label for="Role">Role:</label>
-                    <input type="Role" id="Role" name="Role" value="student" required readonly>
+                    <input type="Role" id="Role" name="Role" value="student" required hidden>
                     
                     <button type="submit">Add Student</button>
                 </form>
@@ -131,6 +130,9 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                 <span class="close-teacher">&times;</span>
                 <h2>Add Teacher Information</h2>
                 <form action="add_teacher.php" method="POST">
+                    <label for="teacherID">Teacher ID:</label>
+                    <input type="text" id="teacherID" name="teacherID" required>
+                    
                     <label for="first_name">First Name:</label>
                     <input type="text" id="first_name" name="first_name" required>
                     
@@ -145,9 +147,6 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                     
                     <label for="email">E-mail:</label>
                     <input type="email" id="email" name="email" required>
-                    
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required>
                     
                     <label for="Role">Role:</label>
                     <input type="Role" id="Role" name="Role" value="teacher" required readonly>
@@ -178,9 +177,6 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                     <label for="email">E-mail:</label>
                     <input type="email" id="email" name="email" required>
                     
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required>
-                    
                     <label for="Role">Role:</label>
                     <input type="Role" id="Role" name="Role" value="parent" required readonly>
                     
@@ -189,7 +185,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
             </div>
         </div>
     </div>
-
+    
     <script>
         var adminModal = document.getElementById("admin-modal");
         var studentModal = document.getElementById("student-modal");
@@ -246,6 +242,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                 parentModal.style.display = "none";
             }
         }
+    
     </script>
 </body>
 </html>

@@ -11,6 +11,7 @@ if ($conn->connect_error)
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
     // Get and sanitize input data
+    $teacher_id = isset($_POST['teacherID']) ? trim(htmlspecialchars($_POST['teacherID'])) : '';
     $first_name = isset($_POST['first_name']) ? trim(htmlspecialchars($_POST['first_name'])) : '';
     $last_name = isset($_POST['last_name']) ? trim(htmlspecialchars($_POST['last_name'])) : '';
     $phone_number = isset($_POST['phone_number']) ? trim(htmlspecialchars($_POST['phone_number'])) : '';
@@ -20,13 +21,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     $Role = isset($_POST['Role']) ? trim(htmlspecialchars($_POST['Role'])) : '';
 
     // Prepare the SQL statement
-    $sql = "INSERT INTO tbl_teacher (first_name, last_name, phone_number, address, email, password,Role) VALUES (?,?,?,?,?,?,?)";
+    $sql = "INSERT INTO tbl_teacher (teacherID, first_name, last_name, phone_number, address, email, password,Role) VALUES (?,?,?,?,?,?,?,?)";
     $stmt = $conn->prepare($sql);
     
    if($stmt) 
    {
         // Bind the input data
-        $stmt->bind_param("ssissss", $first_name,$last_name,$phone_number,$address,$email,$password,$Role);
+        $stmt->bind_param("ississss", $teacher_id,$first_name, $last_name,$phone_number,$address,$email,$password,$Role);
         
         // Execute the statement
         if ($stmt->execute()) 

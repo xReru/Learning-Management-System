@@ -1,75 +1,29 @@
 <?php
-	include "connect.php";
+include 'connect.php';
 
-	$sID = $_GET['id'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $SID = intval($_POST['SID']);
+	$student_id = intval($_POST['studentID']);
+    $first_name = $_POST['first_name'];
+    $last_name = $_POST['last_name'];
+	$address = $_POST['student_address'];
+    $email = $_POST['email'];
+    $phone_number = intval($_POST['phone_number']);
 
-	$sql="SELECT * FROM tbl_student WHERE SID = '$sID'";
-	$result = $conn->query($sql);
+    $sql = "UPDATE tbl_student SET studentID = ?, first_name = ?, last_name = ?, address = ?, email = ?,phone_number = ? WHERE SID = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("issssii", $student_id, $first_name, $last_name, $address, $email, $phone_number, $SID);
+    
+    if ($stmt->execute()) {
+        // Redirect or respond with success message
+        header("Location: manage_account.php"); 
+    } else {
+        // Handle errors
+        echo "Error updating record: " . $conn->error;
+    }
 
-	$row = $result->fetch_assoc();
+    $stmt->close();
+}
 
-	$studID = $row ['SID'];
-	$fname = $row ['first_name'];
-	$lname = $row ['last_name'];
-	$address = $row ['address'];
-	$email = $row ['email'];
-
-		echo $conn->error;
-
-?>
-<html>
-	<head>
-		<link rel="stylesheet" type="text/css" href="../css_admin/update_stud.css">
-	</head>
-		<body>
-			<form method = "POST" action="update_student.php">
-				Student ID:
-				<input type= "text" name= "ids" value="<?php echo $studID; ?>" readonly>
-				<br>
-				First Name:
-				<input type="text" name= "firstname" value="<?php echo $fname; ?>">
-				<br>
-				Last Name:
-				<input type="text" name= "lastname" value="<?php echo  $lname; ?>">
-				<br>
-				Address:
-				<input type="text" name= "addresses" value="<?php echo  $address; ?>">
-				<br>
-				Email:
-				<input type="text" name= "email" value="<?php echo  $email; ?>">
-
-				<br>
-				<input type="submit" name= "update" value="update">
-			</form>
-		</body>
-
-</html>
-<?php
-include "connect.php";
-
-		if(isset($_POST['update']))
-		{
-		$ids = $_POST['ids'];
-		$firstname = $_POST['firstname'];
-		$lastname = $_POST['lastname'];
-		$addresses = $_POST['addresses'];
-		$email = $_POST['email'];
-
-		$sql = "UPDATE tbl_student SET first_name ='$firstname', last_name ='$lastname', address= '$addresses' , email='$email' 
-		WHERE SID ='$ids'";
-
-		$result = $conn->query($sql);
-
-		if($result == True)
-		{
-		?>
-		<?php
-		header("refresh:0;url=manage_account.php");
-		}
-		else
-		{
-			echo $mysqli->error;
-		}
-	}
-?>
+$conn->close();
 

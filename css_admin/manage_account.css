@@ -14,7 +14,7 @@ body {
     border-radius: 3px;
     margin: 10px auto;
     position: relative;
-    margin-left:23%;
+    margin-left: 23%;
 }
 
 p {
@@ -29,7 +29,8 @@ p {
     justify-content: space-between;
     align-items: center;
     gap: 0.5rem;
-    flex-wrap: wrap; /* Allows items to wrap on smaller screens */
+    flex-wrap: wrap;
+    /* Allows items to wrap on smaller screens */
 }
 
 .search-bar {
@@ -70,7 +71,11 @@ p {
     color: white;
 }
 
-.student-modal, .teacher-modal, .parent-modal, .admin-modal {
+.student-modal,
+.teacher-modal,
+.parent-modal,
+.admin-modal,
+.modal {
     display: none;
     position: fixed;
     z-index: 1;
@@ -83,7 +88,10 @@ p {
     padding-top: 50px;
 }
 
-.student-content, .teacher-content, .parent-content, .admin-content {
+.student-content,
+.teacher-content,
+.parent-content,
+.admin-content {
     background-color: #fefefe;
     margin: auto;
     padding: 20px;
@@ -94,17 +102,26 @@ p {
     border-radius: 10px;
 }
 
-.student-content h2, .teacher-content h2, .parent-content h2, .admin-content h2 {
+.student-content h2,
+.teacher-content h2,
+.parent-content h2,
+.admin-content h2 {
     text-align: center;
     margin-bottom: 20px;
 }
 
-.student-content label, .teacher-content label, .parent-content label, .admin-content label {
+.student-content label,
+.teacher-content label,
+.parent-content label,
+.admin-content label {
     font-weight: bold;
     margin-top: 10px;
 }
 
-.student-content input, .teacher-content input, .parent-content input, .admin-content input {
+.student-content input,
+.teacher-content input,
+.parent-content input,
+.admin-content input {
     width: 100%;
     padding: 10px;
     margin-top: 0.5px;
@@ -113,7 +130,10 @@ p {
     border-radius: 5px;
 }
 
-.student-content button, .teacher-content button, .parent-content button, .admin-content button {
+.student-content button,
+.teacher-content button,
+.parent-content button,
+.admin-content button {
     width: 100%;
     padding: 10px;
     background-color: #ff0000;
@@ -124,21 +144,32 @@ p {
     font-size: 12px;
 }
 
-.student-content button:hover, .teacher-content button:hover, .parent-content button:hover, .admin-content button:hover {
+.student-content button:hover,
+.teacher-content button:hover,
+.parent-content button:hover,
+.admin-content button:hover {
     background-color: #bebebe;
     color: black;
 }
 
-.close-student, .close-teacher, .close-parent, .close-admin {
+.close-student,
+.close-teacher,
+.close-parent,
+.close-admin {
     color: #aaa;
     float: right;
     font-size: 28px;
     font-weight: bold;
 }
 
-.close-student:hover, .close-teacher:hover, .close-parent:hover,
-.close-student:focus, .close-teacher:focus, .close-parent:focus,
-.close-admin:focus, .close-admin:hover {
+.close-student:hover,
+.close-teacher:hover,
+.close-parent:hover,
+.close-student:focus,
+.close-teacher:focus,
+.close-parent:focus,
+.close-admin:focus,
+.close-admin:hover {
     color: black;
     text-decoration: none;
     cursor: pointer;
@@ -156,7 +187,8 @@ thead {
     background: #f9f9f9;
 }
 
-th, td {
+th,
+td {
     padding: 3px;
     text-align: center;
     border: 1px solid #ddd;
@@ -180,6 +212,176 @@ td {
     display: inline-block;
 }
 
+/* Modal Styles for Update */
+
+.updateTeacherModal,
+.updateStudentModal,
+.updateParentModal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding-top: 50px;
+}
+
+.updateTeacherModal .modal-content,
+.updateStudentModal .modal-content,
+.updateParentModal .modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+.updateTeacherModal .modal-content h2,
+.updateStudentModal .modal-content h2,
+.updateParentModal .modal-content h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.updateTeacherModal .modal-content label,
+.updateStudentModal .modal-content label,
+.updateParentModal .modal-content label {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.updateTeacherModal .modal-content input,
+.updateStudentModal .modal-content input,
+.updateParentModal .modal-content input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 0.5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.updateTeacherModal .modal-content button,
+.updateStudentModal .modal-content button,
+.updateParentModal .modal-content button {
+    width: 100%;
+    padding: 10px;
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.updateTeacherModal .modal-content button:hover,
+.updateStudentModal .modal-content button:hover,
+.updateParentModal .modal-content button:hover {
+    background-color: #bebebe;
+    color: black;
+}
+
+.close-teacher,
+.close-student,
+.close-parent {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-teacher:hover,
+.close-student:hover,
+.close-parent:hover,
+.close-teacher:focus,
+.close-student:focus,
+.close-parent:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Modal Styles */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding-top: 50px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+.modal-content h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.modal-content label {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 0.5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.modal-content button {
+    width: 100%;
+    padding: 10px;
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.modal-content button:hover {
+    background-color: #bebebe;
+    color: black;
+}
+
+.close-modal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-modal:hover,
+.close-modal:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
 /* Media Queries */
 @media screen and (max-width: 768px) {
     .whitebox {
@@ -199,12 +401,18 @@ td {
         margin: 5px;
     }
 
-    .student-content, .teacher-content, .parent-content, .admin-content {
+    .student-content,
+    .teacher-content,
+    .parent-content,
+    .admin-content {
         width: 90%;
         padding: 15px;
     }
 
-    .student-content button, .teacher-content button, .parent-content button, .admin-content button {
+    .student-content button,
+    .teacher-content button,
+    .parent-content button,
+    .admin-content button {
         font-size: 14px;
     }
 
@@ -212,7 +420,8 @@ td {
         font-size: 13px;
     }
 
-    th, td {
+    th,
+    td {
         padding: 8px;
     }
 }
@@ -233,12 +442,18 @@ td {
         font-size: 12px;
     }
 
-    .student-content, .teacher-content, .parent-content, .admin-content {
+    .student-content,
+    .teacher-content,
+    .parent-content,
+    .admin-content {
         width: 95%;
         padding: 10px;
     }
 
-    .student-content button, .teacher-content button, .parent-content button, .admin-content button {
+    .student-content button,
+    .teacher-content button,
+    .parent-content button,
+    .admin-content button {
         font-size: 12px;
     }
 
@@ -246,7 +461,8 @@ td {
         font-size: 12px;
     }
 
-    th, td {
+    th,
+    td {
         padding: 6px;
     }
 }
