@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -8,7 +7,7 @@
         <body>
             <?php include_once 'sidenav.php'; ?>
         
-  <center> <h3>This is a dashboard</h3>  </center>
+  <center> <h3>This is a announcement</h3>  </center>
         </body>
     </head>
 </html>
