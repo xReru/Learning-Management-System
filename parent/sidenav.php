@@ -3,7 +3,7 @@
 <html>
     <head>
     <meta charset="utf-8">
-    <title>student Dashboard</title>
+    <title>Parent Dashboard</title>
     <link rel="stylesheet" type="text/css" href="../css_admin/dash.css">
 </head>
 <style>
@@ -166,7 +166,7 @@
     </style>
 <body>
     <header class="header">
-    <p  >Student Dashboard</p>
+    <p  >Parent Dashboard</p>
     <div class="logout">
             <form action="logout.php" method="post">
                 <button type="submit" name='logout' class="logout-button">Logout</button>
@@ -183,31 +183,31 @@
 
     
         <li class="nav-item" style="--li-index: 1;">
-            <a href="studentdashboard.php" class="nav-link">
+            <a href="parentdashboard.php" class="nav-link">
                 <img src="../photos/dashboard.png" alt="Dashboard Icon" class="nav-icon">
                 Dashboard
             </a>
         </li>
         <li class="nav-item" style="--li-index: 2;">
-            <a href="studentaccount.php" class="nav-link">
+            <a href="parentaccount.php" class="nav-link">
                 <img src="../photos/account.png" alt="Accounts Icon" class="nav-icon">
                 Account
             </a>
         </li>
         <li class="nav-item" style="--li-index: 3;">
-            <a href="studentclasses.php" class="nav-link">
+            <a href="parentclasses.php" class="nav-link">
                 <img src="../photos/courses.png" alt="Courses Icon" class="nav-icon">
                 Classes
             </a>
         </li>
         <li class="nav-item" style="--li-index: 4;">
-            <a href="studentsubject.php" class="nav-link">
+            <a href="parentsubject.php" class="nav-link">
                 <img src="../photos/class.png" alt="Classes Icon" class="nav-icon">
                Subjects
             </a>
         </li>
         <li class="nav-item" style="--li-index: 5;">
-            <a href="studentannouncement.php" class="nav-link">
+            <a href="parentannouncement.php" class="nav-link">
                 <img src="../photos/book.png" alt="Group Chat Icon" class="nav-icon">
                Announcements
             </a>

@@ -18,33 +18,37 @@
 		echo $conn->error;
 
 ?>
-<html>
-	<head>
-		<link rel="stylesheet" type="text/css" href="../css_admin/update_stud.css">
-	</head>
-		<body>
-			<form method = "POST" action="update_parent.php">
-				Parent ID:
-				<input type= "text" name= "ids" value="<?php echo $studID; ?>" readonly>
-				<br>
-				First Name:
-				<input type="text" name= "firstname" value="<?php echo $fname; ?>">
-				<br>
-				Last Name:
-				<input type="text" name= "lastname" value="<?php echo  $lname; ?>">
-				<br>
-				Address:
-				<input type="text" name= "addresses" value="<?php echo  $address; ?>">
-				<br>
-				Email:
-				<input type="text" name= "email" value="<?php echo  $email; ?>">
+<!-- Modal Structure -->
+<div id="updateModal" class="modal">
+    <div class="modal-content">
+        <h4>Update Information</h4>
+        <form id="updateForm" method="POST">
+            <input type="hidden" name="ids" id="userId">
+            <div>
+                <label>First Name:</label>
+                <input type="text" name="firstname" id="firstname">
+            </div>
+            <div>
+                <label>Last Name:</label>
+                <input type="text" name="lastname" id="lastname">
+            </div>
+            <div>
+                <label>Phone:</label>
+                <input type="text" name="phone" id="phone">
+            </div>
+            <div>
+                <label>Email:</label>
+                <input type="email" name="email" id="email">
+            </div>
+            <div>
+                <label>Address:</label>
+                <input type="text" name="address" id="address">
+            </div>
+            <button type="submit" name="update">Update</button>
+        </form>
+    </div>
+</div>
 
-				<br>
-				<input type="submit" name= "update" value="update">
-			</form>
-		</body>
-
-</html>
 <?php
 include "connect.php";
 

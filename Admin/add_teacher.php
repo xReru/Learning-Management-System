@@ -20,13 +20,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
     $Role = isset($_POST['Role']) ? trim(htmlspecialchars($_POST['Role'])) : '';
 
     // Prepare the SQL statement
+    $hashed_password = password_hash($password, PASSWORD_BCRYPT);
+    
     $sql = "INSERT INTO tbl_teacher (first_name, last_name, phone_number, address, email, password,Role) VALUES (?,?,?,?,?,?,?)";
     $stmt = $conn->prepare($sql);
     
    if($stmt) 
    {
         // Bind the input data
-        $stmt->bind_param("ssissss", $first_name,$last_name,$phone_number,$address,$email,$password,$Role);
+        $stmt->bind_param("ssissss", $first_name,$last_name,$phone_number,$address,$email,$hashed_password,$Role);
         
         // Execute the statement
         if ($stmt->execute()) 

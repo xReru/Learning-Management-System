@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Student Dashboard</title>
+        <title>Teacher Dashboard</title>
         <link rel="icon" href="../images/logasac.png">
         <body>
             <?php include_once 'sidenav.php'; ?>
