@@ -27,16 +27,16 @@ if (isset($_POST['category'])) {
 
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
-                echo "<tr>
-                                    <td>" . htmlspecialchars($row["username"]) . "</td>
-                                    <td>" . htmlspecialchars($row["fname"]) . "</td>
-                                    <td>" . htmlspecialchars($row["lname"]) . "</td>
-                                    <td>" . htmlspecialchars($row["email"]) . "</td>
-                                    <td>
-                                        <button type='button' class='update-btn-admin btn-actions' data-id='" . $row['Aid'] . "'>Update</button>
-                                        <button type='button' class='btn-actions' onclick=\"window.location.href='delete_admin.php?id=" . $row["Aid"] . "'\">Archive</button>
-                                    </td>
-                                </tr>";
+                echo "<tr data-id='" . $row['Aid'] . "'>
+                <td class='admin-username'>" . htmlspecialchars($row["username"]) . "</td>
+                <td class='admin-first-name'>" . htmlspecialchars($row["fname"]) . "</td>
+                <td class='admin-last-name'>" . htmlspecialchars($row["lname"]) . "</td>
+                <td class='admin-email'>" . htmlspecialchars($row["email"]) . "</td>
+                <td>
+                    <button type='button' class='update-btn-admin btn-actions' data-id='" . $row['Aid'] . "'>Update</button>
+                    <button type='button' class='btn-actions' onclick=\"window.location.href='delete_teacher.php?id=" . $row['Aid'] . "'\">Archive</button>
+                </td>
+            </tr>";
             }
         } else {
             echo "<tr><td colspan='6'>No records found</td></tr>";
@@ -86,36 +86,36 @@ if (isset($_POST['category'])) {
         $result = $conn->query($sql);
 
         echo "<table>
-                            <thead>
-                                <tr>
-                                    <th>First Name</th>
-                                    <th>Last Name</th>
-                                    <th>Phone Number</th>
-                                    <th>Email</th>
-                                    <th>Address</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>";
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Phone Number</th>
+                        <th>Email</th>
+                        <th>Address</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>";
 
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
-                echo "<tr>
-                                    <td>" . htmlspecialchars($row["first_name"]) . "</td>
-                                    <td>" . htmlspecialchars($row["last_name"]) . "</td>
-                                    <td>" . htmlspecialchars($row["phone_number"]) . "</td>
-                                    <td>" . htmlspecialchars($row["email"]) . "</ td>
-                                    <td>" . htmlspecialchars($row["address"]) . "</td>
-                                    <td>
-                                        <button type='button' class='update-btn-teacher btn-actions' data-id='" . $row['TID'] . "'>Update</button>
-                                        <button type='button' class='btn-actions' onclick=\"window.location.href='delete_teacher.php?id=" . $row["TID"] . "'\">Archive</button>
-                                    </td>
-                                </tr>";
+                echo "<tr data-id='" . $row['TID'] . "'>
+                        <td class='teacher-first-name'>" . htmlspecialchars($row["first_name"]) . "</td>
+                        <td class='teacher-last-name'>" . htmlspecialchars($row["last_name"]) . "</td>
+                        <td class='teacher-phone-number'>" . htmlspecialchars($row["phone_number"]) . "</td>
+                        <td class='teacher-email'>" . htmlspecialchars($row["email"]) . "</td>
+                        <td class='teacher-address'>" . htmlspecialchars($row["address"]) . "</td>
+                        <td>
+                            <button type='button' class='update-btn-teacher btn-actions' data-id='" . $row['TID'] . "'>Update</button>
+                            <button type='button' class='btn-actions' onclick=\"window.location.href='delete_teacher.php?id=" . $row['TID'] . "'\">Archive</button>
+                        </td>
+                    </tr>";
             }
-        } else {
-            echo "<tr><td colspan='5'>No records found</td></tr>";
         }
-        echo "</tbody></table>";
+
+        echo "</tbody>
+            </table>";
     }
     if ($category === 'parents') {
         $sql = "SELECT PID, first_name, last_name, phone_number, email, address FROM tbl_parent";
@@ -158,7 +158,22 @@ if (isset($_POST['category'])) {
     $conn->close();
 }
 ?>
-
+<style>
+    .toast {
+        position: fixed;
+        top: 10%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #219138;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        opacity: 0.8;
+        transition: opacity 0.3s ease;
+        z-index: 9999;
+        /* Make sure it appears above other elements */
+    }
+</style>
 <!-- Teacher Modal -->
 <div id="updateTeacherModal" class="modal updateTeacherModal">
     <div class="modal-content">
@@ -225,7 +240,7 @@ if (isset($_POST['category'])) {
         <span class="close-parent">&times;</span>
         <form id="updateParentForm" method="POST" action="update_parent.php">
             <input type="hidden" name="PID" id="PID" value="">
-            
+
             <label for="parent_id">Parent ID:</label>
             <input type="text" name="parentID" id="parentID" value="">
 
@@ -255,7 +270,7 @@ if (isset($_POST['category'])) {
         <span class="close-admin">&times;</span>
         <form id="updateAdminForm" method="POST" action="update_admin.php">
             <input type="hidden" name="AID" id="AID" value="">
-            
+
             <label for="admin_id">Admin ID:</label>
             <input type="text" name="adminID" id="adminID" value="">
 
@@ -278,8 +293,17 @@ if (isset($_POST['category'])) {
         </form>
     </div>
 </div>
-
+<div id="toast" class="toast" style="display:none;"></div>
 <script>
+    function showToast(message) {
+        const toast = document.getElementById("toast");
+        toast.innerText = message;
+        toast.style.display = "block";
+        setTimeout(() => {
+            toast.style.display = "none";
+        }, 3000);
+    }
+
     var updateTeacherModal = document.getElementById("updateTeacherModal");
     var updateStudentModal = document.getElementById("updateStudentModal");
     var updateParentModal = document.getElementById("updateParentModal");
@@ -365,6 +389,40 @@ if (isset($_POST['category'])) {
         });
     });
 
+    document.getElementById("updateTeacherForm").addEventListener("submit", function (event) {
+        event.preventDefault();  // Prevent form from submitting the normal way
+
+        const formData = new FormData(this);
+
+        fetch('update_teacher.php', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update the table row dynamically
+                    const teacherRow = document.querySelector(`tr[data-id='${data.TID}']`);
+                    teacherRow.querySelector(".teacher-first-name").innerText = data.first_name;
+                    teacherRow.querySelector(".teacher-last-name").innerText = data.last_name;
+                    teacherRow.querySelector(".teacher-email").innerText = data.email;
+                    teacherRow.querySelector(".teacher-phone-number").innerText = data.phone_number;
+                    teacherRow.querySelector(".teacher-address").innerText = data.address;
+                    // Show success message
+                    showToast("Teacher information updated successfully");
+
+                    // Close the modal
+                    updateTeacherModal.style.display = "none";
+                } else {
+                    alert("Failed to update teacher information");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+    });
+
+
     updateStudentBtn.forEach(button => {
         button.addEventListener('click', function () {
             const studentId = button.getAttribute('data-id');
@@ -430,5 +488,38 @@ if (isset($_POST['category'])) {
                 });
         });
     });
+
+    document.getElementById("updateAdminForm").addEventListener("submit", function (event) {
+        event.preventDefault();  // Prevent form from submitting the normal way
+
+        const formData = new FormData(this);
+
+        fetch('update_admin.php', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update the table row dynamically
+                    const adminRow = document.querySelector(`tr[data-id='${data.Aid}']`);
+                    adminRow.querySelector(".admin-username").innerText = data.username;
+                    adminRow.querySelector(".admin-first-name").innerText = data.fname;
+                    adminRow.querySelector(".admin-last-name").innerText = data.lname;
+                    adminRow.querySelector(".admin-email").innerText = data.email;
+                    // Show success message
+                    showToast("Admin information updated successfully");
+
+                    // Close the modal
+                    updateAdminModal.style.display = "none";
+                } else {
+                    alert("Failed to update admin information");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+    });
+
 
 </script>
