@@ -63,17 +63,17 @@ if (isset($_POST['category'])) {
 
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
-                echo "<tr>
-                                    <td>" . htmlspecialchars($row["first_name"]) . "</td>
-                                    <td>" . htmlspecialchars($row["last_name"]) . "</td>
-                                    <td>" . htmlspecialchars($row["phone_number"]) . "</td>
-                                    <td>" . htmlspecialchars($row["email"]) . "</td>
-                                    <td>" . htmlspecialchars($row["address"]) . "</td>
-                                    <td>
-                                        <button type='button' class='update-btn-student btn-actions' data-id='" . $row['SID'] . "'>Update</button>
-                                        <button type='button' class='btn-actions' onclick=\"window.location.href='delete_student.php?id=" . $row["SID"] . "'\">Archive</button>
-                                    </td>
-                                </tr>";
+                echo "<tr data-id='" . $row['SID'] . "'>
+                        <td class='student-first-name'>" . htmlspecialchars($row["first_name"]) . "</td>
+                        <td class='student-last-name'>" . htmlspecialchars($row["last_name"]) . "</td>
+                        <td class='student-phone-number'>" . htmlspecialchars($row["phone_number"]) . "</td>
+                        <td class='student-email'>" . htmlspecialchars($row["email"]) . "</td>
+                        <td class='student-address'>" . htmlspecialchars($row["address"]) . "</td>
+                        <td>
+                            <button type='button' class='update-btn-student btn-actions' data-id='" . $row['SID'] . "'>Update</button>
+                            <button type='button' class='btn-actions' onclick=\"window.location.href='delete_teacher.php?id=" . $row['SID'] . "'\">Archive</button>
+                        </td>
+                    </tr>";
             }
         } else {
             echo "<tr><td colspan='6'>No records found</td></tr>";
@@ -136,17 +136,17 @@ if (isset($_POST['category'])) {
 
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
-                echo "<tr>
-                                    <td>" . htmlspecialchars($row["first_name"]) . "</td>
-                                    <td>" . htmlspecialchars($row["last_name"]) . "</td>
-                                    <td>" . htmlspecialchars($row["phone_number"]) . "</td>
-                                    <td>" . htmlspecialchars($row["email"]) . "</td>
-                                    <td>" . htmlspecialchars($row["address"]) . "</td>
-                                    <td>
-                                        <button type='button' class='update-btn-parent btn-actions' data-id='" . $row['PID'] . "'>Update</button>
-                                        <button type='button' class='btn-actions' onclick=\"window.location.href='delete_parent.php?id=" . $row["PID"] . "'\">Archive</button>
-                                    </td>
-                                </tr>";
+                echo "<tr data-id='" . $row['PID'] . "'>
+                        <td class='parent-first-name'>" . htmlspecialchars($row["first_name"]) . "</td>
+                        <td class='parent-last-name'>" . htmlspecialchars($row["last_name"]) . "</td>
+                        <td class='parent-phone-number'>" . htmlspecialchars($row["phone_number"]) . "</td>
+                        <td class='parent-email'>" . htmlspecialchars($row["email"]) . "</td>
+                        <td class='parent-address'>" . htmlspecialchars($row["address"]) . "</td>
+                        <td>
+                            <button type='button' class='update-btn-parent btn-actions' data-id='" . $row['PID'] . "'>Update</button>
+                            <button type='button' class='btn-actions' onclick=\"window.location.href='delete_teacher.php?id=" . $row['PID'] . "'\">Archive</button>
+                        </td>
+                    </tr>";
             }
         } else {
             echo "<tr><td colspan='5'>No records found</td></tr>";
@@ -444,6 +444,39 @@ if (isset($_POST['category'])) {
                 });
         });
     });
+    document.getElementById("updateStudentForm").addEventListener("submit", function (event) {
+        event.preventDefault();  // Prevent form from submitting the normal way
+
+        const formData = new FormData(this);
+
+        fetch('update_student.php', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update the table row dynamically
+                    const studentRow = document.querySelector(`tr[data-id='${data.SID}']`);
+                    studentRow.querySelector(".student-first-name").innerText = data.first_name;
+                    studentRow.querySelector(".student-last-name").innerText = data.last_name;
+                    studentRow.querySelector(".student-email").innerText = data.email;
+                    studentRow.querySelector(".student-phone-number").innerText = data.phone_number;
+                    studentRow.querySelector(".student-address").innerText = data.address;
+                    // Show success message
+                    showToast("Student information updated successfully");
+
+                    // Close the modal
+                    updateStudentModal.style.display = "none";
+                } else {
+                    alert("Failed to update student information");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+    });
+
 
     updateParentBtn.forEach(button => {
         button.addEventListener('click', function () {
@@ -465,6 +498,38 @@ if (isset($_POST['category'])) {
                     updateParentModal.style.display = "block";
                 });
         });
+    });
+    document.getElementById("updateParentForm").addEventListener("submit", function (event) {
+        event.preventDefault();  // Prevent form from submitting the normal way
+
+        const formData = new FormData(this);
+
+        fetch('update_parent.php', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update the table row dynamically
+                    const parentRow = document.querySelector(`tr[data-id='${data.PID}']`);
+                    parentRow.querySelector(".parent-first-name").innerText = data.first_name;
+                    parentRow.querySelector(".parent-last-name").innerText = data.last_name;
+                    parentRow.querySelector(".parent-email").innerText = data.email;
+                    parentRow.querySelector(".parent-phone-number").innerText = data.phone_number;
+                    parentRow.querySelector(".parent-address").innerText = data.address;
+                    // Show success message
+                    showToast("Parent information updated successfully");
+
+                    // Close the modal
+                    updateParentModal.style.display = "none";
+                } else {
+                    alert("Failed to update parent information");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
     });
 
     updateAdminBtn.forEach(button => {
