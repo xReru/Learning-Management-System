@@ -34,7 +34,7 @@ if (isset($_POST['category'])) {
                 <td class='admin-email'>" . htmlspecialchars($row["email"]) . "</td>
                 <td>
                     <button type='button' class='update-btn-admin btn-actions' data-id='" . $row['Aid'] . "'>Update</button>
-                    <button type='button' class='btn-actions' onclick=\"window.location.href='delete_teacher.php?id=" . $row['Aid'] . "'\">Archive</button>
+                    <button type='button' class='archive-btn btn-actions' data-id='" . $row['Aid'] . "' data-role='admin'>Archive</button>
                 </td>
             </tr>";
             }
@@ -71,7 +71,7 @@ if (isset($_POST['category'])) {
                         <td class='student-address'>" . htmlspecialchars($row["address"]) . "</td>
                         <td>
                             <button type='button' class='update-btn-student btn-actions' data-id='" . $row['SID'] . "'>Update</button>
-                            <button type='button' class='btn-actions' onclick=\"window.location.href='delete_teacher.php?id=" . $row['SID'] . "'\">Archive</button>
+                            <button type='button' class='archive-btn btn-actions' data-id='" . $row['SID'] . "' data-role='student'>Archive</button>
                         </td>
                     </tr>";
             }
@@ -108,7 +108,7 @@ if (isset($_POST['category'])) {
                         <td class='teacher-address'>" . htmlspecialchars($row["address"]) . "</td>
                         <td>
                             <button type='button' class='update-btn-teacher btn-actions' data-id='" . $row['TID'] . "'>Update</button>
-                            <button type='button' class='btn-actions' onclick=\"window.location.href='delete_teacher.php?id=" . $row['TID'] . "'\">Archive</button>
+                            <button type='button' class='archive-btn btn-actions' data-id='" . $row['TID'] . "' data-role='teacher'>Archive</button>
                         </td>
                     </tr>";
             }
@@ -144,7 +144,7 @@ if (isset($_POST['category'])) {
                         <td class='parent-address'>" . htmlspecialchars($row["address"]) . "</td>
                         <td>
                             <button type='button' class='update-btn-parent btn-actions' data-id='" . $row['PID'] . "'>Update</button>
-                            <button type='button' class='btn-actions' onclick=\"window.location.href='delete_teacher.php?id=" . $row['PID'] . "'\">Archive</button>
+                            <button type='button' class='archive-btn btn-actions' data-id='" . $row['PID'] . "' data-role='parent'>Archive</button>
                         </td>
                     </tr>";
             }
@@ -158,20 +158,118 @@ if (isset($_POST['category'])) {
     $conn->close();
 }
 ?>
+
 <style>
     .toast {
         position: fixed;
-        top: 10%;
+        top: 5%;
         left: 50%;
         transform: translateX(-50%);
         background-color: #219138;
         color: #fff;
         padding: 10px 20px;
         border-radius: 5px;
-        opacity: 0.8;
+        opacity: 1;
         transition: opacity 0.3s ease;
         z-index: 9999;
         /* Make sure it appears above other elements */
+    }
+
+    /* Modal background styling */
+    .modalArch {
+        display: none;
+        /* Hidden by default */
+        position: fixed;
+        /* Stay in place */
+        z-index: 9999;
+        /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%;
+        /* Full width */
+        height: 100%;
+        /* Full height */
+        overflow: auto;
+        /* Enable scroll if needed */
+        background-color: rgba(0, 0, 0, 0.5);
+        /* Black background with opacity */
+    }
+
+    /* Modal content box styling */
+    .modal-contentArch {
+        background-color: #fff;
+        margin: 10% auto;
+        /* 30% top margin */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        /* Default width for responsiveness */
+        max-width: 400px;
+        /* Limit the width for larger screens */
+        text-align: center;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        /* Add shadow for depth */
+        position: relative;
+    }
+
+    /* Close button (X) styling */
+    .close-modal {
+        position: absolute;
+        right: 20px;
+        top: 10px;
+        color: #aaa;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .close-modal:hover,
+    .close-modal:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    /* Confirm and Cancel button styling */
+    #confirmArchive,
+    #cancelArchive {
+        padding: 10px 20px;
+        margin: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    /* Confirm button (green color) */
+    #confirmArchive {
+        background-color: #28a745;
+        color: white;
+    }
+
+    #confirmArchive:hover {
+        background-color: #218838;
+    }
+
+    /* Cancel button (red color) */
+    #cancelArchive {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    #cancelArchive:hover {
+        background-color: #c82333;
+    }
+
+    /* Responsiveness */
+    @media (max-width: 600px) {
+        .modal-contentArch {
+            width: 90%;
+            /* Expand the modal width for mobile screens */
+            margin-top: 40%;
+            /* Increase top margin for small screens */
+        }
     }
 </style>
 <!-- Teacher Modal -->
@@ -294,4 +392,17 @@ if (isset($_POST['category'])) {
     </div>
 </div>
 <div id="toast" class="toast" style="display:none;"></div>
+<!-- Confirmation Modal -->
+<div id="confirmationModal" class="modalArch">
+    <div class="modal-contentArch">
+        <span class="close-modal">&times;</span>
+        <p>Are you sure you want to archive this user?</p>
+        <button id="confirmArchive">Confirm</button>
+        <button id="cancelArchive">Cancel</button>
+    </div>
+</div>
+
+<div id="toastArchive" class="toast toast1" style="display:none;"></div>
+
+
 <script src="account_modals.js"></script>

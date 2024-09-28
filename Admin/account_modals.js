@@ -288,3 +288,69 @@ document.getElementById("updateAdminForm").addEventListener("submit", function (
             console.error("Error:", error);
         });
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const archiveButtons = document.querySelectorAll('.archive-btn');
+    const modal = document.getElementById('confirmationModal');
+    const confirmButton = document.getElementById('confirmArchive');
+    const cancelButton = document.getElementById('cancelArchive');
+    let userId, userRole, rowElement;
+
+    // Archive button click - open modal
+    archiveButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            userId = this.getAttribute('data-id');
+            userRole = this.getAttribute('data-role');
+            rowElement = this.closest('tr');
+            modal.style.display = 'block'; // Show confirmation modal
+        });
+    });
+
+    // Confirm archive action
+    confirmButton.addEventListener('click', function () {
+        // Perform archive operation
+        fetch('archive_user.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `user_id=${userId}&role=${userRole}`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                showToastArchive(userRole+' archived successfully');
+                rowElement.remove(); // Remove the archived row from the table
+            } else {
+                showToastArchive('Failed to archive user');
+            }
+            modal.style.display = 'none'; // Close modal
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    // Cancel button click - close modal
+    cancelButton.addEventListener('click', function () {
+        modal.style.display = 'none';
+    });
+
+    // Close modal on 'x' click
+    document.querySelector('.close-modal').addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    // Close modal on clicking outside
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    };
+});
+
+// Function to show toast message
+function showToastArchive(message) {
+    const toast = document.getElementById('toastArchive');
+    toast.textContent = message;
+    toast.style.display = 'block';
+    setTimeout(() => {
+        toast.style.display = 'none';
+    }, 3000);
+}
