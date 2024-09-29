@@ -15,11 +15,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param("issssii", $student_id, $first_name, $last_name, $address, $email, $phone_number, $SID);
     
     if ($stmt->execute()) {
-        // Redirect or respond with success message
-        header("Location: manage_account.php"); 
+        echo json_encode([
+            'success' => true,
+            'SID' => $SID,
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'email' => $email,
+            'phone_number' => $phone_number,
+            'studentID' => $student_id,
+            'address' => $address
+        ]);
     } else {
-        // Handle errors
-        echo "Error updating record: " . $conn->error;
+        echo json_encode(['success' => false]);
     }
 
     $stmt->close();

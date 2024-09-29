@@ -13,7 +13,7 @@ if (isset($_POST['category'])) {
         $sql = "SELECT Aid, username, fname, lname, email, phone FROM tbl_admin";
         $result = $conn->query($sql);
 
-        echo "<table>
+        echo "<table id='adminTable'>
                             <thead>
                                 <tr>
                                     <th>Username</th>
@@ -34,7 +34,7 @@ if (isset($_POST['category'])) {
                 <td class='admin-email'>" . htmlspecialchars($row["email"]) . "</td>
                 <td>
                     <button type='button' class='update-btn-admin btn-actions' data-id='" . $row['Aid'] . "'>Update</button>
-                    <button type='button' class='btn-actions' onclick=\"window.location.href='delete_teacher.php?id=" . $row['Aid'] . "'\">Archive</button>
+                    <button type='button' class='archive-btn btn-actions' data-id='" . $row['Aid'] . "' data-role='admin'>Archive</button>
                 </td>
             </tr>";
             }
@@ -63,17 +63,17 @@ if (isset($_POST['category'])) {
 
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
-                echo "<tr>
-                                    <td>" . htmlspecialchars($row["first_name"]) . "</td>
-                                    <td>" . htmlspecialchars($row["last_name"]) . "</td>
-                                    <td>" . htmlspecialchars($row["phone_number"]) . "</td>
-                                    <td>" . htmlspecialchars($row["email"]) . "</td>
-                                    <td>" . htmlspecialchars($row["address"]) . "</td>
-                                    <td>
-                                        <button type='button' class='update-btn-student btn-actions' data-id='" . $row['SID'] . "'>Update</button>
-                                        <button type='button' class='btn-actions' onclick=\"window.location.href='delete_student.php?id=" . $row["SID"] . "'\">Archive</button>
-                                    </td>
-                                </tr>";
+                echo "<tr data-id='" . $row['SID'] . "'>
+                        <td class='student-first-name'>" . htmlspecialchars($row["first_name"]) . "</td>
+                        <td class='student-last-name'>" . htmlspecialchars($row["last_name"]) . "</td>
+                        <td class='student-phone-number'>" . htmlspecialchars($row["phone_number"]) . "</td>
+                        <td class='student-email'>" . htmlspecialchars($row["email"]) . "</td>
+                        <td class='student-address'>" . htmlspecialchars($row["address"]) . "</td>
+                        <td>
+                            <button type='button' class='update-btn-student btn-actions' data-id='" . $row['SID'] . "'>Update</button>
+                            <button type='button' class='archive-btn btn-actions' data-id='" . $row['SID'] . "' data-role='student'>Archive</button>
+                        </td>
+                    </tr>";
             }
         } else {
             echo "<tr><td colspan='6'>No records found</td></tr>";
@@ -108,7 +108,7 @@ if (isset($_POST['category'])) {
                         <td class='teacher-address'>" . htmlspecialchars($row["address"]) . "</td>
                         <td>
                             <button type='button' class='update-btn-teacher btn-actions' data-id='" . $row['TID'] . "'>Update</button>
-                            <button type='button' class='btn-actions' onclick=\"window.location.href='delete_teacher.php?id=" . $row['TID'] . "'\">Archive</button>
+                            <button type='button' class='archive-btn btn-actions' data-id='" . $row['TID'] . "' data-role='teacher'>Archive</button>
                         </td>
                     </tr>";
             }
@@ -136,17 +136,17 @@ if (isset($_POST['category'])) {
 
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
-                echo "<tr>
-                                    <td>" . htmlspecialchars($row["first_name"]) . "</td>
-                                    <td>" . htmlspecialchars($row["last_name"]) . "</td>
-                                    <td>" . htmlspecialchars($row["phone_number"]) . "</td>
-                                    <td>" . htmlspecialchars($row["email"]) . "</td>
-                                    <td>" . htmlspecialchars($row["address"]) . "</td>
-                                    <td>
-                                        <button type='button' class='update-btn-parent btn-actions' data-id='" . $row['PID'] . "'>Update</button>
-                                        <button type='button' class='btn-actions' onclick=\"window.location.href='delete_parent.php?id=" . $row["PID"] . "'\">Archive</button>
-                                    </td>
-                                </tr>";
+                echo "<tr data-id='" . $row['PID'] . "'>
+                        <td class='parent-first-name'>" . htmlspecialchars($row["first_name"]) . "</td>
+                        <td class='parent-last-name'>" . htmlspecialchars($row["last_name"]) . "</td>
+                        <td class='parent-phone-number'>" . htmlspecialchars($row["phone_number"]) . "</td>
+                        <td class='parent-email'>" . htmlspecialchars($row["email"]) . "</td>
+                        <td class='parent-address'>" . htmlspecialchars($row["address"]) . "</td>
+                        <td>
+                            <button type='button' class='update-btn-parent btn-actions' data-id='" . $row['PID'] . "'>Update</button>
+                            <button type='button' class='archive-btn btn-actions' data-id='" . $row['PID'] . "' data-role='parent'>Archive</button>
+                        </td>
+                    </tr>";
             }
         } else {
             echo "<tr><td colspan='5'>No records found</td></tr>";
@@ -158,20 +158,118 @@ if (isset($_POST['category'])) {
     $conn->close();
 }
 ?>
+
 <style>
     .toast {
         position: fixed;
-        top: 10%;
+        top: 5%;
         left: 50%;
         transform: translateX(-50%);
         background-color: #219138;
         color: #fff;
         padding: 10px 20px;
         border-radius: 5px;
-        opacity: 0.8;
+        opacity: 1;
         transition: opacity 0.3s ease;
         z-index: 9999;
         /* Make sure it appears above other elements */
+    }
+
+    /* Modal background styling */
+    .modalArch {
+        display: none;
+        /* Hidden by default */
+        position: fixed;
+        /* Stay in place */
+        z-index: 9999;
+        /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%;
+        /* Full width */
+        height: 100%;
+        /* Full height */
+        overflow: auto;
+        /* Enable scroll if needed */
+        background-color: rgba(0, 0, 0, 0.5);
+        /* Black background with opacity */
+    }
+
+    /* Modal content box styling */
+    .modal-contentArch {
+        background-color: #fff;
+        margin: 10% auto;
+        /* 30% top margin */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        /* Default width for responsiveness */
+        max-width: 400px;
+        /* Limit the width for larger screens */
+        text-align: center;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+        /* Add shadow for depth */
+        position: relative;
+    }
+
+    /* Close button (X) styling */
+    .close-modal {
+        position: absolute;
+        right: 20px;
+        top: 10px;
+        color: #aaa;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .close-modal:hover,
+    .close-modal:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    /* Confirm and Cancel button styling */
+    #confirmArchive,
+    #cancelArchive {
+        padding: 10px 20px;
+        margin: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    /* Confirm button (green color) */
+    #confirmArchive {
+        background-color: #28a745;
+        color: white;
+    }
+
+    #confirmArchive:hover {
+        background-color: #218838;
+    }
+
+    /* Cancel button (red color) */
+    #cancelArchive {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    #cancelArchive:hover {
+        background-color: #c82333;
+    }
+
+    /* Responsiveness */
+    @media (max-width: 600px) {
+        .modal-contentArch {
+            width: 90%;
+            /* Expand the modal width for mobile screens */
+            margin-top: 40%;
+            /* Increase top margin for small screens */
+        }
     }
 </style>
 <!-- Teacher Modal -->
@@ -294,232 +392,17 @@ if (isset($_POST['category'])) {
     </div>
 </div>
 <div id="toast" class="toast" style="display:none;"></div>
-<script>
-    function showToast(message) {
-        const toast = document.getElementById("toast");
-        toast.innerText = message;
-        toast.style.display = "block";
-        setTimeout(() => {
-            toast.style.display = "none";
-        }, 3000);
-    }
+<!-- Confirmation Modal -->
+<div id="confirmationModal" class="modalArch">
+    <div class="modal-contentArch">
+        <span class="close-modal">&times;</span>
+        <p>Are you sure you want to archive this user?</p>
+        <button id="confirmArchive">Confirm</button>
+        <button id="cancelArchive">Cancel</button>
+    </div>
+</div>
 
-    var updateTeacherModal = document.getElementById("updateTeacherModal");
-    var updateStudentModal = document.getElementById("updateStudentModal");
-    var updateParentModal = document.getElementById("updateParentModal");
-    var updateAdminModal = document.getElementById("updateAdminModal");
-
-    var updateTeacherBtn = document.querySelectorAll('.update-btn-teacher');
-    var updateStudentBtn = document.querySelectorAll('.update-btn-student');
-    var updateParentBtn = document.querySelectorAll('.update-btn-parent');
-    var updateAdminBtn = document.querySelectorAll('.update-btn-admin');
-
-    var updateTeacherClose = document.querySelectorAll(".close-teacher");
-    var updateStudentClose = document.querySelectorAll(".close-student");
-    var updateParentClose = document.querySelectorAll(".close-parent");
-    var updateAdminClose = document.querySelectorAll(".close-admin");
-
-    updateTeacherBtn.forEach(button => {
-        button.addEventListener('click', function () {
-            updateTeacherModal.style.display = "block";
-        });
-    });
-
-    updateStudentBtn.forEach(button => {
-        button.addEventListener('click', function () {
-            updateStudentModal.style.display = "block";
-        });
-    });
-
-    updateParentBtn.forEach(button => {
-        button.addEventListener('click', function () {
-            updateParentModal.style.display = "block";
-        });
-    });
-
-    updateAdminBtn.forEach(button => {
-        button.addEventListener('click', function () {
-            updateAdminModal.style.display = "block";
-        });
-    });
-
-    updateTeacherClose.forEach(button => {
-        button.addEventListener('click', function () {
-            updateTeacherModal.style.display = "none";
-        });
-    });
-
-    updateStudentClose.forEach(button => {
-        button.addEventListener('click', function () {
-            updateStudentModal.style.display = "none";
-        });
-    });
-
-    updateParentClose.forEach(button => {
-        button.addEventListener('click', function () {
-            updateParentModal.style.display = "none";
-        });
-    });
-
-    updateAdminClose.forEach(button => {
-        button.addEventListener('click', function () {
-            updateAdminModal.style.display = "none";
-        });
-    });
-
-    updateTeacherBtn.forEach(button => {
-        button.addEventListener('click', function () {
-            const teacherId = button.getAttribute('data-id');
-
-            // Fetch teacher data
-            fetch(`fetch_user.php?category=teacher&id=${teacherId}`)
-                .then(response => response.json())
-                .then(data => {
-                    // Populate modal fields
-                    document.getElementById('TID').value = data.TID;
-                    document.getElementById('teacherID').value = data.teacherID;
-                    document.getElementById('teacherFirstName').value = data.first_name;
-                    document.getElementById('teacherLastName').value = data.last_name;
-                    document.getElementById('teacherAddress').value = data.address;
-                    document.getElementById('teacherEmail').value = data.email;
-                    document.getElementById('teacherPhoneNumber').value = data.phone_number;
-
-                    updateTeacherModal.style.display = "block";
-                });
-        });
-    });
-
-    document.getElementById("updateTeacherForm").addEventListener("submit", function (event) {
-        event.preventDefault();  // Prevent form from submitting the normal way
-
-        const formData = new FormData(this);
-
-        fetch('update_teacher.php', {
-            method: 'POST',
-            body: formData
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Update the table row dynamically
-                    const teacherRow = document.querySelector(`tr[data-id='${data.TID}']`);
-                    teacherRow.querySelector(".teacher-first-name").innerText = data.first_name;
-                    teacherRow.querySelector(".teacher-last-name").innerText = data.last_name;
-                    teacherRow.querySelector(".teacher-email").innerText = data.email;
-                    teacherRow.querySelector(".teacher-phone-number").innerText = data.phone_number;
-                    teacherRow.querySelector(".teacher-address").innerText = data.address;
-                    // Show success message
-                    showToast("Teacher information updated successfully");
-
-                    // Close the modal
-                    updateTeacherModal.style.display = "none";
-                } else {
-                    alert("Failed to update teacher information");
-                }
-            })
-            .catch(error => {
-                console.error("Error:", error);
-            });
-    });
+<div id="toastArchive" class="toast toast1" style="display:none;"></div>
 
 
-    updateStudentBtn.forEach(button => {
-        button.addEventListener('click', function () {
-            const studentId = button.getAttribute('data-id');
-
-            // Fetch student data
-            fetch(`fetch_user.php?category=student&id=${studentId}`)
-                .then(response => response.json())
-                .then(data => {
-                    // Populate modal fields
-                    document.getElementById('SID').value = data.SID;
-                    document.getElementById('studentID').value = data.studentID;
-                    document.getElementById('studentFirstName').value = data.first_name;
-                    document.getElementById('studentLastName').value = data.last_name;
-                    document.getElementById('studentAddress').value = data.address;
-                    document.getElementById('studentEmail').value = data.email;
-                    document.getElementById('studentPhoneNumber').value = data.phone_number;
-
-                    updateStudentModal.style.display = "block";
-                });
-        });
-    });
-
-    updateParentBtn.forEach(button => {
-        button.addEventListener('click', function () {
-            const parentId = button.getAttribute('data-id');
-
-            // Fetch parent data
-            fetch(`fetch_user.php?category=parent&id=${parentId}`)
-                .then(response => response.json())
-                .then(data => {
-                    // Populate modal fields
-                    document.getElementById('PID').value = data.PID;
-                    document.getElementById('parentID').value = data.parentID;
-                    document.getElementById('parentFirstName').value = data.first_name;
-                    document.getElementById('parentLastName').value = data.last_name;
-                    document.getElementById('parentEmail').value = data.email;
-                    document.getElementById('parentAddress').value = data.address;
-                    document.getElementById('parentPhoneNumber').value = data.phone_number;
-
-                    updateParentModal.style.display = "block";
-                });
-        });
-    });
-
-    updateAdminBtn.forEach(button => {
-        button.addEventListener('click', function () {
-            const adminId = button.getAttribute('data-id');
-
-            // Fetch teacher data
-            fetch(`fetch_user.php?category=admin&id=${adminId}`)
-                .then(response => response.json())
-                .then(data => {
-                    // Populate modal fields
-                    document.getElementById('AID').value = data.Aid;
-                    document.getElementById('adminID').value = data.Admin_ID;
-                    document.getElementById('adminFirstName').value = data.fname;
-                    document.getElementById('adminLastName').value = data.lname;
-                    document.getElementById('adminUsername').value = data.username;
-                    document.getElementById('adminEmail').value = data.email;
-                    document.getElementById('adminPhoneNumber').value = data.phone;
-
-                    updateAdminModal.style.display = "block";
-                });
-        });
-    });
-
-    document.getElementById("updateAdminForm").addEventListener("submit", function (event) {
-        event.preventDefault();  // Prevent form from submitting the normal way
-
-        const formData = new FormData(this);
-
-        fetch('update_admin.php', {
-            method: 'POST',
-            body: formData
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Update the table row dynamically
-                    const adminRow = document.querySelector(`tr[data-id='${data.Aid}']`);
-                    adminRow.querySelector(".admin-username").innerText = data.username;
-                    adminRow.querySelector(".admin-first-name").innerText = data.fname;
-                    adminRow.querySelector(".admin-last-name").innerText = data.lname;
-                    adminRow.querySelector(".admin-email").innerText = data.email;
-                    // Show success message
-                    showToast("Admin information updated successfully");
-
-                    // Close the modal
-                    updateAdminModal.style.display = "none";
-                } else {
-                    alert("Failed to update admin information");
-                }
-            })
-            .catch(error => {
-                console.error("Error:", error);
-            });
-    });
-
-
-</script>
+<script src="account_modals.js"></script>
