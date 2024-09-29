@@ -1,7 +1,7 @@
 <?php
 include "connect.php";
-//session_start();
-/* 
+session_start();
+
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header("refresh:0; ../login.php");
     exit;
@@ -13,7 +13,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         $type = $rowedit['Role'];
         $name = $rowedit['lname']." ".$rowedit['lname'];
     }
-}*/
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,9 +23,6 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     <title>Manage Accounts</title>
     <link rel="icon" href="../images/logasac.png">
     <link rel="stylesheet" href="../css_admin/manage_account.css">
-
-
-
 
 </head>
 <body>
@@ -65,7 +62,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 
         <div id="admin-modal" class="admin-modal">
             <div class="admin-content">
-                <span class="close-admin">&times;</span>
+                <span class="close-add-admin">&times;</span>
                 <h2>Add Admin Information</h2>
                 <form action="add_admin.php" method="POST">
                     <label for="first_name">First Name:</label>
@@ -99,7 +96,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 
         <div id="student-modal" class="student-modal">
             <div class="student-content">
-                <span class="close-student">&times;</span>
+                <span class="close-add-student">&times;</span>
                 <h2>Add Student Information</h2>
                 <form action="add_student.php" method="POST">
                     <label for="student_id">Student ID:</label>
@@ -130,7 +127,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
        
         <div id="teacher-modal" class="teacher-modal">
             <div class="teacher-content">
-                <span class="close-teacher">&times;</span>
+                <span class="close-add-teacher">&times;</span>
                 <h2>Add Teacher Information</h2>
                 <form action="add_teacher.php" method="POST">
                     <label for="teacherID">Teacher ID:</label>
@@ -162,7 +159,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
    
         <div id="parent-modal" class="parent-modal">
             <div class="parent-content">
-                <span class="close-parent">&times;</span>
+                <span class="close-add-parent">&times;</span>
                 <h2>Add Parent Information</h2>
                 <form action="add_parent.php" method="POST">
                     <label for="first_name">First Name:</label>
@@ -200,10 +197,10 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         var teacherBtn = document.getElementById("teacheradd");
         var parentBtn = document.getElementById("parentadd");
 
-        var adminClose = document.querySelector(".close-admin");
-        var studentClose = document.querySelector(".close-student");
-        var teacherClose = document.querySelector(".close-teacher");
-        var parentClose = document.querySelector(".close-parent");
+        var adminClose = document.querySelector(".close-add-admin");
+        var studentClose = document.querySelector(".close-add-student");
+        var teacherClose = document.querySelector(".close-add-teacher");
+        var parentClose = document.querySelector(".close-add-parent");
 
         adminBtn.onclick = function() {
             adminModal.style.display = "block";
