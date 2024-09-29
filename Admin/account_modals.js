@@ -354,3 +354,12 @@ function showToastArchive(message) {
         toast.style.display = 'none';
     }, 3000);
 }
+
+
+//Add Users Section
+const tableBody = document.querySelector("#adminTable tbody");
+if (tableBody) {
+    tableBody.insertAdjacentHTML('beforeend', newRow);
+} else {
+    console.error("Table body not found!");
+}

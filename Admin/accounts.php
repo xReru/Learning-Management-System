@@ -13,7 +13,7 @@ if (isset($_POST['category'])) {
         $sql = "SELECT Aid, username, fname, lname, email, phone FROM tbl_admin";
         $result = $conn->query($sql);
 
-        echo "<table>
+        echo "<table id='adminTable'>
                             <thead>
                                 <tr>
                                     <th>Username</th>

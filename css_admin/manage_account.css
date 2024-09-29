@@ -147,29 +147,6 @@ body {
     color: black;
 }
 
-.close-add-student,
-.close-add-teacher,
-.close-add-parent,
-.close-add-admin {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close-add-student:hover,
-.close-add-teacher:hover,
-.close-add-parent:hover,
-.close-add-student:focus,
-.close-add-teacher:focus,
-.close-add-parent:focus,
-.close-add-admin:focus,
-.close-add-admin:hover {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-
 table {
     width: 100%;
     border-collapse: collapse;
@@ -284,7 +261,12 @@ td {
 
 .close-teacher,
 .close-student,
-.close-parent {
+.close-parent,
+.close-admin,
+.close-add-student,
+.close-add-teacher,
+.close-add-parent,
+.close-add-admin {
     color: #aaa;
     float: right;
     font-size: 28px;
@@ -294,9 +276,19 @@ td {
 .close-teacher:hover,
 .close-student:hover,
 .close-parent:hover,
+.close-admin:hover,
+.close-add-student:hover,
+.close-add-teacher:hover,
+.close-add-parent:hover,
+.close-add-admin:hover,
 .close-teacher:focus,
 .close-student:focus,
-.close-parent:focus {
+.close-parent:focus,
+.close-admin:focus,
+.close-add-student:focus,
+.close-add-teacher:focus,
+.close-add-parent:focus,
+.close-add-admin:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
