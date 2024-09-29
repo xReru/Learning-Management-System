@@ -68,25 +68,10 @@ if (!$result) {
     width: 100%;
     max-width: 100%; /* Prevent the image from exceeding the width */
     max-height: 500px;
-    object-fit: cover;
+    object-fit: contain;
     filter: brightness(70%);
     padding:10px;
 }
-
-/* Adjust for responsiveness */
-@media screen and (max-width: 768px) {
-    .announcement-container {
-        max-width: 100%; /* Take the full width on smaller screens */
-        margin-left: 0;   /* Remove left margin */
-        padding: 0;       /* Remove padding */
-    }
-
-    .announcement-card img {
-        max-height: 300px; /* Reduce the image size for smaller screens */
-    }
-}
-
-
 
 .texts {
     text-align: center;
@@ -165,9 +150,21 @@ if (!$result) {
 }
 
 /* Media queries for responsiveness */
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) { /*768px */
+    .announcement-container {
+        max-width: 100%; /* Take the full width on smaller screens */
+        margin-left: 0;   /* Remove left margin */
+        padding: 0;       /* Remove padding */
+    }
+
+    .announcement-card img {
+        max-height: 70%; /* 300px */
+    }
+}
+
+@media (max-width: 100%) {
     .texts {
-        font-size: 24px;
+        font-size: 30%px;
     }
 
     .announcement-title {
@@ -179,7 +176,7 @@ if (!$result) {
     }
 
     .announcement-card img {
-        max-height: 250px;
+        max-height: 60%;
     }
 
     .carousel-inner {
@@ -225,7 +222,7 @@ if (!$result) {
         </div>
     </div>
 
-   
+
     <div class="radio-btns" id="radio-btns">
         <?php
         for ($i = 0; $i < $result->num_rows; $i++) {

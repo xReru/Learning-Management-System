@@ -39,17 +39,26 @@ $conn->close();
     <link rel="stylesheet" type="text/css" href="styles.css">
     <link rel="icon" href="../images/logasac.png">
     <style>
-        
+        /* Base styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         #calendar-container {
             width: 100%;
             max-width: 1000px;
-            margin: 40px auto;
             background-color: #fff;
             border-radius: 12px;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            margin: 40px auto;
+            margin-left: 20%;
+            margin-top: 7%;
             padding: 25px;
             position: relative;
-            margin-left:20%;
+            
         }
 
         /* Header Section */
@@ -60,25 +69,17 @@ $conn->close();
             margin-bottom: 10px;
         }
 
-        #todayContainer {
-            font-size: 24px;
-            font-weight: bold;
-            color: #333;
+        #openCreateModal {
+            background-color: #cc0b0b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            position: relative;
         }
 
-        #openCreateModal {
-    position: absolute;
- 
-    background-color: #cc0b0b;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    margin-left: 590px;
-    margin-bottom: -48px;
-}
-     /* Modal Styles */
-     .modal {
+        /* Modal Styles */
+        .modal {
             display: none;
             position: fixed;
             z-index: 1000;
@@ -103,7 +104,6 @@ $conn->close();
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
             position: relative;
         }
-
 
         .close {
             color: #aaa;
@@ -153,7 +153,6 @@ $conn->close();
             cursor: pointer;
             font-size: 16px;
             margin-top: 12px;
-
             transition: background-color 0.3s ease;
         }
 
@@ -186,16 +185,63 @@ $conn->close();
             background-color: #cc0b0b;
         }
 
+        /* Media Queries for Responsive Design */
+        @media screen and (max-width: 1024px) { /* 1024px */
+            #calendar-container {
+                margin-left: 5%;
+                margin-top: 20%;
+                padding: 15px;
+            }
+
+            #openCreateModal {
+                margin-left: 10%;
+            }
+
+            .modal-content {
+                width: 95%;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            #calendar-container {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            #openCreateModal {
+                margin-left: 5%;
+                padding: 10px 15px;
+            }
+
+            .modal-content {
+                width: 90%;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            #calendar-container {
+                padding: 10px;
+                box-shadow: none;
+            }
+
+            #openCreateModal {
+                margin: 0 auto;
+                display: block;
+                padding: 8px 12px;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 15px;
+            }
+        }
     </style>
 </head>
 <body>
 
 <form action="logout.php" method="post">
 <?php include_once 'navs/nav.php'; ?>
-    </form>
-
-
-
+</form>
 
 <div class="modal" id="createModal">
     <div class="modal-content">
@@ -219,8 +265,6 @@ $conn->close();
     </div>
 </div>
 
-
-
 <div class="modal" id="choiceModal">
     <div class="modal-content">
         <span class="close" data-modal="choiceModal">&times;</span>
@@ -232,7 +276,6 @@ $conn->close();
         </div>
     </div>
 </div>
-
 
 <div class="modal" id="updateModal">
     <div class="modal-content">
@@ -257,7 +300,6 @@ $conn->close();
     </div>
 </div>
 
-
 <div class="modal" id="deleteModal">
     <div class="modal-content">
         <span class="close" data-modal="deleteModal">&times;</span>
@@ -269,6 +311,7 @@ $conn->close();
         </form>
     </div>
 </div>
+
 <div id="calendar-container">
     <div id="calendar-header">
         <button id="openCreateModal">Add Announcement</button>
@@ -276,10 +319,6 @@ $conn->close();
 
     <div id="calendar"></div>
 </div>
-
-
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" rel="stylesheet">
 
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" rel="stylesheet">
@@ -289,31 +328,26 @@ document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
-        events: <?php echo json_encode($events); ?>, // Assuming $events is defined in PHP
+        events: <?php echo json_encode($events); ?>,
         eventClick: function(info) {
             var id = info.event.id;
             var title = info.event.title;
             var date = info.event.startStr;
 
-            // Set the fields in the modals
             document.getElementById('update_id').value = id;
             document.getElementById('update_title').value = title;
             document.getElementById('update_date').value = date;
             document.getElementById('delete_id').value = id;
 
-            // Show the choice modal (options for update or delete)
             document.getElementById('choiceModal').style.display = 'block';
         }
     });
     calendar.render();
 
-    // Handling modal openings and closures
-    var openCreateModalBtn = document.getElementById('openCreateModal');
-    openCreateModalBtn.onclick = function() {
+    document.getElementById('openCreateModal').onclick = function() {
         document.getElementById('createModal').style.display = 'block';
     };
 
-    // Close modals when the user clicks the "close" span
     document.querySelectorAll('.close').forEach(function(span) {
         span.onclick = function() {
             var modalId = this.getAttribute('data-modal');
@@ -321,7 +355,6 @@ document.addEventListener('DOMContentLoaded', function() {
         };
     });
 
-    // Handling the choice between update and delete
     document.getElementById('updateChoiceBtn').onclick = function() {
         document.getElementById('choiceModal').style.display = 'none';
         document.getElementById('updateModal').style.display = 'block';
@@ -332,14 +365,13 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('deleteModal').style.display = 'block';
     };
 
-    // Close modals when clicking outside
     window.onclick = function(event) {
         if (event.target.classList.contains('modal')) {
             event.target.style.display = 'none';
         }
     };
 });
-
 </script>
 </body>
 </html>
+
