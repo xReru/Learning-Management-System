@@ -1,34 +1,30 @@
-<?php
+<?php 
 include "connect.php";
 session_start();
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header("refresh:0; ../login.php");
+    header("Location: ../login.php");
     exit;
-} else if (isset($_SESSION['AID'])) {
-    $userid = $_SESSION['AID'];
+} 
 
+$userid = $_SESSION['AID'] ?? null;
+if ($userid) {
     $getrecord = mysqli_query($conn, "SELECT * FROM tbl_admin WHERE AID ='$userid'");
-    while ($rowedit = mysqli_fetch_assoc($getrecord)) {
-        $type = $rowedit['Role'];
-        $name = $rowedit['lname'] . " " . $rowedit['lname'];
-    }
+    $rowedit = mysqli_fetch_assoc($getrecord);
+    $type = $rowedit['Role'];
+    $name = $rowedit['lname'] . " " . $rowedit['lname'];
 }
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Accounts</title>
     <link rel="icon" href="../images/logasac.png">
     <link rel="stylesheet" href="../css_admin/manage_account.css">
-    
 </head>
-
 <body>
-
     <form action="logout.php" method="post">
         <?php include_once 'navs/nav.php'; ?>
     </form>
@@ -46,7 +42,6 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                 <input type="text" class="search-bar" placeholder="Search" alt="search">
                 <button class="search-button">Search</button>
             </form>
-
             <form method="POST" action="">
                 <select id="category" name="category" onchange="this.form.submit()">
                     <option value disabled selected>Select a user account</option>
@@ -62,32 +57,26 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
             <?php include_once 'accounts.php'; ?>
         </div>
 
+        <!-- Add Admin Modal -->
         <div id="admin-modal" class="admin-modal">
             <div class="admin-content">
                 <span class="close-add-admin">&times;</span>
                 <h2>Add Admin Information</h2>
-                <form id="addAdminForm" action="add_admin.php" method="POST">
+                <form id="addAdminForm">
                     <label for="first_name">First Name:</label>
                     <input type="text" id="first_name" name="first_name" required>
-
                     <label for="last_name">Last Name:</label>
                     <input type="text" id="last_name" name="last_name" required>
-
                     <label for="phone_number">Phone Number:</label>
                     <input type="text" id="phone_number" name="phone_number" required>
-
                     <label for="username">Username:</label>
                     <input type="text" id="username" name="username" required>
-
                     <label for="adminid">Admin ID:</label>
                     <input type="text" id="adminid" name="adminid" required>
-
                     <label for="email">E-mail:</label>
                     <input type="email" id="email" name="email" required>
-
                     <label for="password">Password:</label>
                     <input type="password" id="password" name="password" required>
-
                     <select id="Roles" name="Roles" value="Admin" hidden>
                         <option value="Admin">Admin</option>
                     </select>
@@ -96,92 +85,73 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
             </div>
         </div>
 
+        <!-- Add Student Modal -->
         <div id="student-modal" class="student-modal">
             <div class="student-content">
                 <span class="close-add-student">&times;</span>
                 <h2>Add Student Information</h2>
-                <form action="add_student.php" method="POST">
+                <form id="addStudentForm">
                     <label for="student_id">Student ID:</label>
                     <input type="text" id="student_id" name="student_id" required>
-
                     <label for="first_name">First Name:</label>
                     <input type="text" id="first_name" name="first_name" required>
-
                     <label for="last_name">Last Name:</label>
                     <input type="text" id="last_name" name="last_name" required>
-
                     <label for="phone_number">Phone Number:</label>
                     <input type="text" id="phone_number" name="phone_number" required>
-
                     <label for="address">Address:</label>
                     <input type="text" id="address" name="address" required>
-
                     <label for="email">E-mail:</label>
                     <input type="email" id="email" name="email" required>
-
                     <input type="Role" id="Role" name="Role" value="student" required hidden>
-
                     <button type="submit">Add Student</button>
                 </form>
             </div>
         </div>
 
-
+        <!-- Add Teacher Modal -->
         <div id="teacher-modal" class="teacher-modal">
             <div class="teacher-content">
                 <span class="close-add-teacher">&times;</span>
                 <h2>Add Teacher Information</h2>
-                <form action="add_teacher.php" method="POST">
+                <form id="addTeacherForm">
                     <label for="teacherID">Teacher ID:</label>
                     <input type="text" id="teacherID" name="teacherID" required>
-
                     <label for="first_name">First Name:</label>
                     <input type="text" id="first_name" name="first_name" required>
-
                     <label for="last_name">Last Name:</label>
                     <input type="text" id="last_name" name="last_name" required>
-
                     <label for="phone_number">Phone Number:</label>
                     <input type="text" id="phone_number" name="phone_number" required>
-
                     <label for="address">Address:</label>
                     <input type="text" id="address" name="address" required>
-
                     <label for="email">E-mail:</label>
                     <input type="email" id="email" name="email" required>
-
                     <label for="Role">Role:</label>
                     <input type="Role" id="Role" name="Role" value="teacher" required readonly>
-
                     <button type="submit">Add Teacher</button>
                 </form>
             </div>
         </div>
 
-
+        <!-- Add Parent Modal -->
         <div id="parent-modal" class="parent-modal">
             <div class="parent-content">
                 <span class="close-add-parent">&times;</span>
                 <h2>Add Parent Information</h2>
-                <form action="add_parent.php" method="POST">
+                <form id="addParentForm">
                     <label for="first_name">First Name:</label>
                     <input type="text" id="first_name" name="first_name" required>
-
                     <label for="last_name">Last Name:</label>
                     <input type="text" id="last_name" name="last_name" required>
-
                     <label for="phone_number">Phone Number:</label>
                     <input type="text" id="phone_number" name="phone_number" required>
-
                     <label for="address">Address:</label>
                     <input type="text" id="address" name="address" required>
-
                     <label for="email">E-mail:</label>
                     <input type="email" id="email" name="email" required>
-
                     <label for="Role">Role:</label>
                     <input type="Role" id="Role" name="Role" value="parent" required readonly>
-
                     <button type="submit">Add Parent</button>
                 </form>
             </div>
@@ -189,6 +159,163 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     </div>
     <script type="text/javascript" src="manage_account_modal.js"></script>
     <script type="text/javascript" src="account_modals.js"></script>
-</body>
+    <script>
+        // Setup button listeners for updating and archiving users
+        function setupButtonListeners() {
+            const roles = ['admin', 'student', 'parent', 'teacher'];
 
+            roles.forEach(role => {
+                const updateBtns = document.querySelectorAll(`.update-btn-${role}`);
+                updateBtns.forEach(button => {
+                    button.addEventListener('click', function () {
+                        const userId = button.getAttribute('data-id');
+                        fetch(`fetch_user.php?category=${role}&id=${userId}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                // Populate fields based on role
+                                if (role === 'admin') {
+                                    document.getElementById('AID').value = data.Aid;
+                                    document.getElementById('adminID').value = data.Admin_ID;
+                                    document.getElementById('adminFirstName').value = data.fname;
+                                    document.getElementById('adminLastName').value = data.lname;
+                                    document.getElementById('adminUsername').value = data.username;
+                                    document.getElementById('adminEmail').value = data.email;
+                                    document.getElementById('adminPhoneNumber').value = data.phone;
+                                    updateAdminModal.style.display = "block";
+                                } else if (role === 'student') {
+                                    document.getElementById('studentID').value = data.SID;
+                                    document.getElementById('studentFirstName').value = data.first_name;
+                                    document.getElementById('studentLastName').value = data.last_name;
+                                    document.getElementById('studentPhoneNumber').value = data.phone_number;
+                                    document.getElementById('studentEmail').value = data.email;
+                                    document.getElementById('studentAddress').value = data.address;
+                                    updateStudentModal.style.display = "block";
+                                } else if (role === 'parent') {
+                                    document.getElementById('parentID').value = data.PID;
+                                    document.getElementById('parentFirstName').value = data.first_name;
+                                    document.getElementById('parentLastName').value = data.last_name;
+                                    document.getElementById('parentPhoneNumber').value = data.phone_number;
+                                    document.getElementById('parentEmail').value = data.email;
+                                    document.getElementById('parentAddress').value = data.address;
+                                    updateParentModal.style.display = "block";
+                                } else if (role === 'teacher') {
+                                    document.getElementById('teacherID').value = data.TID;
+                                    document.getElementById('teacherFirstName').value = data.first_name;
+                                    document.getElementById('teacherLastName').value = data.last_name;
+                                    document.getElementById('teacherPhoneNumber').value = data.phone_number;
+                                    document.getElementById('teacherEmail').value = data.email;
+                                    document.getElementById('teacherAddress').value = data.address;
+                                    updateTeacherModal.style.display = "block";
+                                }
+                            });
+                    });
+                });
+            });
+
+            // Archive buttons
+            const archiveButtons = document.querySelectorAll('.archive-btn');
+            archiveButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    userId = this.getAttribute('data-id');
+                    userRole = this.getAttribute('data-role');
+                    rowElement = this.closest('tr');
+                    modal.style.display = 'block'; // Show confirmation modal
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setupButtonListeners(); // Initial call to set up listeners
+            
+            const roles = ['admin', 'student', 'parent', 'teacher'];
+
+            roles.forEach(role => {
+                let roleIDKey = `${role.charAt(0).toUpperCase()}ID`;
+                document.getElementById(`add${role.charAt(0).toUpperCase() + role.slice(1)}Form`).addEventListener("submit", function (event) {
+                    event.preventDefault(); // Prevent normal form submission
+
+                    const formData = new FormData(this);
+
+                    fetch(`add_${role}.php`, {
+                        method: 'POST',
+                        body: formData
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                let newRow;
+
+                                if (role === 'admin') {
+                                    newRow = `
+                            <tr data-id='${data.Aid}'>
+                                <td class='admin-username'>${data.username}</td>
+                                <td class='admin-first-name'>${data.first_name}</td>
+                                <td class='admin-last-name'>${data.last_name}</td>
+                                <td class='admin-email'>${data.email}</td>
+                                <td>
+                                    <button type='button' class='update-btn-admin btn-actions' data-id='${data.Aid}'>Update</button>
+                                    <button type='button' class='archive-btn btn-actions' data-id='${data.Aid}' data-role='admin'>Archive</button>
+                                </td>
+                            </tr>`;
+                                } else {
+                                    newRow = `
+                            <tr data-id='${data[roleIDKey]}' data-role='${role}'>
+                                <td class='${role}-first-name'>${data.first_name}</td>
+                                <td class='${role}-last-name'>${data.last_name}</td>
+                                <td class='${role}-phone-number'>${data.phone_number}</td>
+                                <td class='${role}-email'>${data.email}</td>
+                                <td class='${role}-address'>${data.address}</td>
+                                <td>
+                                    <button type='button' class='update-btn-${role} btn-actions' data-id='${data[roleIDKey]}'>Update</button>
+                                    <button type='button' class='archive-btn btn-actions' data-id='${data[roleIDKey]}'>Archive</button>
+                                </td>
+                            </tr>`;
+                                }
+
+                                const tableBody = document.querySelector(`#${role}Table tbody`);
+                                tableBody.insertAdjacentHTML('beforeend', newRow);
+
+                                setupButtonListeners(); // Reattach event listeners
+
+                                showToast(`${role.charAt(0).toUpperCase() + role.slice(1)} added successfully`);
+
+                                // Close the modal after successful submission
+                                document.getElementById(`${role}-modal`).style.display = "none"; 
+                            } else {
+                                alert(`Failed to add ${role}`);
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error:", error);
+                        });
+                });
+            });
+        });
+
+        // Confirm archive action
+        confirmButton.addEventListener('click', function () {
+            fetch('archive_user.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `user_id=${userId}&role=${userRole}`
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        showToast(userRole.charAt(0).toUpperCase() + userRole.slice(1) + ' archived successfully');
+                        rowElement.remove(); // Remove the archived row from the table
+                    } else {
+                        showToast('Failed to archive ' + userRole);
+                    }
+                    modal.style.display = 'none'; // Close modal
+                })
+                .catch(error => console.error('Error:', error));
+        });
+
+        // Cancel button click - close modal
+        cancelButton.addEventListener('click', function () {
+            modal.style.display = 'none';
+        });
+    </script>
+</body>
 </html>

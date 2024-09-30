@@ -48,7 +48,7 @@ if (isset($_POST['category'])) {
         $sql = "SELECT SID, first_name, last_name, phone_number, email, address FROM tbl_student";
         $result = $conn->query($sql);
 
-        echo "<table>
+        echo "<table id='studentTable'>
                             <thead>
                                 <tr>
                                     <th>First Name</th>
@@ -85,7 +85,7 @@ if (isset($_POST['category'])) {
         $sql = "SELECT TID, first_name, last_name, phone_number, email, address FROM tbl_teacher";
         $result = $conn->query($sql);
 
-        echo "<table>
+        echo "<table id='teacherTable'>
                 <thead>
                     <tr>
                         <th>First Name</th>
@@ -121,7 +121,7 @@ if (isset($_POST['category'])) {
         $sql = "SELECT PID, first_name, last_name, phone_number, email, address FROM tbl_parent";
         $result = $conn->query($sql);
 
-        echo "<table>
+        echo "<table id='parentTable'>
                             <thead>
                                 <tr>
                                     <th>First Name</th>
