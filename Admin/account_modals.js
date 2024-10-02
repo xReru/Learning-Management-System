@@ -1,10 +1,22 @@
 function showToast(message) {
-    const toast = document.getElementById("toast");
+    // Remove any existing toast
+    const existingToast = document.querySelector('.toast');
+    if (existingToast) {
+        existingToast.remove();
+    }
+
+    // Create a new toast element
+    const toast = document.createElement('div');
+    toast.className = 'toast';
     toast.innerText = message;
-    toast.style.display = "block";
+
+    // Append toast to body (or a specific container)
+    document.body.appendChild(toast);
+
+    // Set a timeout to remove the toast after a certain duration
     setTimeout(() => {
-        toast.style.display = "none";
-    }, 3000);
+        toast.remove();
+    }, 3000); // Adjust duration as needed
 }
 
 var updateTeacherModal = document.getElementById("updateTeacherModal");
