@@ -45,20 +45,30 @@ $conn->close();
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
         }
-
-        #calendar-container {
+        #main-content {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
             width: 100%;
-            max-width: 1000px;
+            height: 100vh; /* Full screen height */
+            margin-top: 5%;
             background-color: #fff;
-            border-radius: 12px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-            margin: 40px auto;
-            margin-left: 20%;
-            margin-top: 7%;
+        }
+        #sidenav {
+            width: 250px;  Fixed width for the sidenav */
+            background-color: #333;
+            color: white;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        #calendar-container {
+            flex-grow: 1; /* Allow calendar to take remaining space */
             padding: 25px;
-            position: relative;
-            
+            background-color: #fff;
+            height: auto;
         }
 
         /* Header Section */
@@ -66,7 +76,19 @@ $conn->close();
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+        }
+        /* Hamburger menu styles */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            margin: 4px;
         }
 
         #openCreateModal {
@@ -77,12 +99,10 @@ $conn->close();
             cursor: pointer;
             position: relative;
         }
-
         /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
-            z-index: 1000;
             left: 0;
             top: 0;
             width: 100%;
@@ -188,9 +208,8 @@ $conn->close();
         /* Media Queries for Responsive Design */
         @media screen and (max-width: 1024px) { /* 1024px */
             #calendar-container {
-                margin-left: 5%;
-                margin-top: 20%;
-                padding: 15px;
+                max-width: 90%; /* Reduce the max-width on smaller screens */
+                margin-top: 10%;
             }
 
             #openCreateModal {
@@ -203,8 +222,15 @@ $conn->close();
         }
 
         @media screen and (max-width: 768px) {
+            #main-content {
+                flex-direction: column; /* Stack the sidenav and calendar vertically */
+            }
+
+            #sidenav {
+                width: 100%; /* Full width sidenav */
+            }
+
             #calendar-container {
-                margin-left: 0;
                 width: 100%;
             }
 
@@ -219,9 +245,21 @@ $conn->close();
         }
 
         @media screen and (max-width: 480px) {
+            .hamburger {
+                display: flex;
+            }
+
+            #sidenav {
+                width: 0;
+                overflow: hidden;
+            }
+
+            #sidenav.show {
+                width: 250px;
+            }
+
             #calendar-container {
-                padding: 10px;
-                box-shadow: none;
+                padding: 15px;
             }
 
             #openCreateModal {
@@ -238,10 +276,22 @@ $conn->close();
     </style>
 </head>
 <body>
-
-<form action="logout.php" method="post">
-<?php include_once 'navs/nav.php'; ?>
-</form>
+<div class="hamburger" onclick="toggleSidenav()">
+        <div></div>
+        <div></div>
+        <div></div>
+</div>
+<div id="main-content">
+        <nav id="sidenav">
+            <?php include_once 'navs/nav.php'; ?>
+        </nav>
+        <div id="calendar-container">
+            <div id="calendar-header">
+                <button id="openCreateModal">Add Announcement</button>
+            </div>
+            <div id="calendar"></div>
+        </div>
+</div>
 
 <div class="modal" id="createModal">
     <div class="modal-content">
@@ -312,18 +362,14 @@ $conn->close();
     </div>
 </div>
 
-<div id="calendar-container">
-    <div id="calendar-header">
-        <button id="openCreateModal">Add Announcement</button>
-    </div>
-
-    <div id="calendar"></div>
-</div>
-
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.css" rel="stylesheet">
 
 <script>
+function toggleSidenav() {
+    var sidenav = document.getElementById('sidenav');
+    sidenav.classList.toggle('show');
+}
 document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
