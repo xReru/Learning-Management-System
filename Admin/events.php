@@ -46,7 +46,7 @@ if (!$result) {
 
 
 .announcement-container {
-    max-width: calc(100% - 250px); /* Ensure the container stays within the page alongside the sidebar */
+    max-width: calc(100% - 250px); 
     margin-left: 250px; /* Add margin to push it past the sidebar */
     background-color: white;
     border-radius: 10px;
@@ -55,7 +55,7 @@ if (!$result) {
     padding: 10px;
     transition: margin 0.3s ease;
     margin-right:10px;
-    margin-top:10px;
+    margin-top:3%;
     margin-bottom:10px;
 }
 
@@ -74,10 +74,13 @@ if (!$result) {
 }
 
 .texts {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
     font-size: 28px;
+    font-family:'Arial', sans-serif;;
+    color: #b40404;
+    text-align: left;
+    margin-left: 10px;
+    margin-bottom: 20px;
+
 }
 
 .carousel {
@@ -100,8 +103,6 @@ if (!$result) {
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
-
 
 .announcement-content {
     padding: 20px;
@@ -152,9 +153,10 @@ if (!$result) {
 /* Media queries for responsiveness */
 @media screen and (max-width: 768px) { /*768px */
     .announcement-container {
-        max-width: 100%; /* Take the full width on smaller screens */
-        margin-left: 0;   /* Remove left margin */
-        padding: 0;       /* Remove padding */
+        max-width: 100%; 
+        margin-left: 0; 
+        margin-top: 15%;
+        padding: 0;    
     }
 
     .announcement-card img {
@@ -193,9 +195,9 @@ if (!$result) {
     </form>
 
 <div class="announcement-container">
-    <h1 class="texts">Latest Announcements</h1>
+    <h1 class="texts latest_announcements">Latest Announcements</h1>
 
-   
+
     <div class="carousel">
         <div class="carousel-inner" id="carousel-inner">
             <?php
