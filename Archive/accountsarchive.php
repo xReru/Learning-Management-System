@@ -32,9 +32,9 @@ session_start();
             <form method="POST" action="">
                 <select id="category" name="category" onchange="this.form.submit()">
                     <option value disabled selected>Select a user account</option>
-                    <option value="students" <?php echo isset($_POST['category']) && $_POST['category'] == 'students' ? 'selected' : ''; ?>>Students</option>
-                    <option value="teachers" <?php echo isset($_POST['category']) && $_POST['category'] == 'teachers' ? 'selected' : ''; ?>>Teachers</option>
-                    <option value="parents" <?php echo isset($_POST['category']) && $_POST['category'] == 'parents' ? 'selected' : ''; ?>>Parents</option>
+                    <option value="student" <?php echo isset($_POST['category']) && $_POST['category'] == 'student' ? 'selected' : ''; ?>>Students</option>
+                    <option value="teacher" <?php echo isset($_POST['category']) && $_POST['category'] == 'teacher' ? 'selected' : ''; ?>>Teachers</option>
+                    <option value="parent" <?php echo isset($_POST['category']) && $_POST['category'] == 'parent' ? 'selected' : ''; ?>>Parents</option>
                     <option value="admin" <?php echo isset($_POST['category']) && $_POST['category'] == 'admin' ? 'selected' : ''; ?>>Admin</option>
                 </select>
             </form>
