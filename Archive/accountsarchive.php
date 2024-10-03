@@ -16,7 +16,6 @@ session_start();
 </head>
 <body>
 
-<form action="logouts.php" method="post">
 <?php include_once 'van.php'; ?>
     </form>
     <div class="whitebox">

@@ -240,25 +240,33 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         }
 
         .btn-logout {
-            padding: 10px 20px;
+            padding: 10px 20px !important;
             /* Button padding */
-            margin: 0 10px;
+            margin: 0 10px !important;
             /* Space between buttons */
             border: none;
-            border-radius: 5px;
+            border-radius: 5px !important;
             cursor: pointer;
         }
 
         .btn-confirm-logout {
-            background-color: #4CAF50;
+            background-color: #4CAF50 !important;
             /* Green */
             color: white;
         }
 
         .btn-cancel-logout {
-            background-color: #f44336;
+            background-color: #f44336 !important;
             /* Red */
             color: white;
+        }
+        .confirmTitle{
+            color: black !important;
+            margin-bottom: 10px;
+        }
+        .confirmContent{
+            color: black !important;
+            margin-bottom: 10px;
         }
     </style>
 
@@ -335,8 +343,8 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     <div id="logoutModal" class="logoutModal" aria-hidden="true">
         <div class="logoutModal-content">
             <span class="closeLogout" id="closeLogModal">&times;</span>
-            <h2>Confirm Logout</h2>
-            <p>Are you sure you want to log out?</p>
+            <h2 class="confirmTitle">Confirm Logout</h2>
+            <p class="confirmContent">Are you sure you want to log out?</p>
             <form id="logoutForm" action="logout.php" method="post">
                 <div class="button-container-logout">
                     <button type="submit" name='logout' class="btn-logout btn-confirm-logout">Yes, Logout</button>

@@ -11,7 +11,6 @@ session_start();
         <title>Admin Dashboard</title>
         <link rel="icon" href="../images/logasac.png">
         <body>
-        <form action="logouts.php" method="post">
 <?php include_once 'van.php'; ?>
     </form>
         

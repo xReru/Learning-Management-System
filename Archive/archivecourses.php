@@ -19,9 +19,13 @@ session_start();
         margin-bottom: 20px;
         position: relative;
     }
-    table, th, td {
+
+    table,
+    th,
+    td {
         border: 1px solid #ddd;
     }
+
     th {
         background-color: #b40404;
         color: white;
@@ -31,13 +35,16 @@ session_start();
         top: 0;
         z-index: 2;
     }
+
     td {
         padding: 12px;
         text-align: left;
     }
+
     tr:nth-child(even) {
         background-color: #f2f2f2;
     }
+
     .toast {
         position: fixed;
         top: 5%;
@@ -52,6 +59,7 @@ session_start();
         z-index: 9999;
         /* Make sure it appears above other elements */
     }
+
     /* Modal container */
     .modal {
         display: none;
@@ -157,9 +165,7 @@ session_start();
 </style>
 
 <body>
-    <form action="logouts.php" method="post">
-        <?php include_once 'van.php'; ?>
-    </form>
+    <?php include_once 'van.php'; ?>
 
     <div class="main-content">
         <div class="header-content">
@@ -261,17 +267,17 @@ session_start();
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `course_id=${courseId}`
                 })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        showToastRestore('Course restored successfully');
-                        rowElement.remove(); // Remove restored row
-                    } else {
-                        showToastRestore('Failed to restore course');
-                    }
-                    modal.style.display = 'none'; // Close modal
-                })
-                .catch(error => console.error('Error:', error));
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            showToastRestore('Course restored successfully');
+                            rowElement.remove(); // Remove restored row
+                        } else {
+                            showToastRestore('Failed to restore course');
+                        }
+                        modal.style.display = 'none'; // Close modal
+                    })
+                    .catch(error => console.error('Error:', error));
             });
 
             // Close modal on cancel
