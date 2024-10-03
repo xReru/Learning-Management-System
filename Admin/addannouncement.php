@@ -75,8 +75,16 @@ $conn->close();
         #calendar-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            
         }
+        #calendar{
+            margin-top: 20px;
+            background-color: #f9f9f9; 
+            border: 1px;
+            border-radius: 8px; 
+            padding: 20px;
+        }
+        
         /* Hamburger menu styles */
         .hamburger {
             display: none;
@@ -116,27 +124,30 @@ $conn->close();
         .modal-content {
             background-color: #fff;
             margin: 5% auto;
-            padding: 30px;
+            padding: 20px;
             border: 1px solid #ddd;
-            border-radius: 10px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            width: 400px;
+            max-width: 100%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             position: relative;
         }
-
-        .close {
-            color: #aaa;
-            font-size: 28px;
+        h2 {
+            font-size: 22px;
             font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .close {
+            color: #000;
+            font-size: 24px;
             position: absolute;
-            top: 15px;
-            right: 20px;
+            right: 15px;
+            top: 10px;
             cursor: pointer;
         }
 
         .close:hover {
-            color: #000;
+            color: #999;
         }
 
         /* Form Styles in Modals */
@@ -146,23 +157,25 @@ $conn->close();
         }
 
         label {
-            margin: 15px 0 8px;
-            font-weight: 500;
+            font-weight: 600;
+            margin-bottom: 8px;
         }
 
         input[type="text"],
-        input[type="date"],
-        textarea {
+        textarea,
+        input[type="date"] {
             padding: 12px;
             border: 1px solid #ddd;
-            border-radius: 8px;
+            border-radius: 5px;
+            margin-bottom: 15px;
             font-size: 16px;
-            margin-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         textarea {
             resize: vertical;
-            height: 120px;
+            height: 100px;
         }
 
         button {
@@ -176,8 +189,23 @@ $conn->close();
             transition: background-color 0.3s ease;
         }
 
-        button[type="submits"] {
+        input[type="file"] {
+            margin-top: 10px;
+        }
+
+        button[type="submit"] {
             background-color: #cc0b0b;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #a80a0a;
         }
 
         /* Action Buttons in Choice Modal */
@@ -206,7 +234,7 @@ $conn->close();
         }
 
         /* Media Queries for Responsive Design */
-        @media screen and (max-width: 1024px) { /* 1024px */
+        @media screen and (max-width: 100%) { /* 1024px */
             #calendar-container {
                 max-width: 90%; /* Reduce the max-width on smaller screens */
                 margin-top: 10%;
@@ -221,7 +249,7 @@ $conn->close();
             }
         }
 
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 50%) {
             #main-content {
                 flex-direction: column; /* Stack the sidenav and calendar vertically */
             }
@@ -231,6 +259,7 @@ $conn->close();
             }
 
             #calendar-container {
+                margin-top: 20%;
                 width: 100%;
             }
 
@@ -244,7 +273,7 @@ $conn->close();
             }
         }
 
-        @media screen and (max-width: 480px) {
+        @media screen and (max-width: 30%) {
             .hamburger {
                 display: flex;
             }
@@ -258,8 +287,21 @@ $conn->close();
                 width: 250px;
             }
 
+            #calendar-header {
+                margin-top: 0; /* Reset margin-top */
+            }
+
             #calendar-container {
-                padding: 15px;
+                margin-top: 0; /* Reset margin-top */
+                height: 100vh; /* Full viewport height */
+                padding: 0; /* Remove padding to utilize full height */
+            }
+
+            #calendar {
+                margin-top: 0; /* Reset margin-top */
+                height: calc(100vh - 50px); /* Adjust height to avoid overflow with header */
+                padding: 20px; /* Keep some padding */
+                overflow: auto; /* Allow scrolling if needed */
             }
 
             #openCreateModal {
@@ -269,10 +311,14 @@ $conn->close();
             }
 
             .modal-content {
-                width: 95%;
-                padding: 15px;
+                width: 90%;
+            }
+
+            button[type="submit"] {
+                width: 100%;
             }
         }
+
     </style>
 </head>
 <body>
@@ -310,7 +356,7 @@ $conn->close();
             <label for="fileToUpload">Upload Image:</label>
             <input type="file" id="fileToUpload" name="fileToUpload" accept="image/*"><br>
 
-            <button type="submits" name="add">Create Announcement</button>
+            <button type="submit" name="add">Create Announcement</button>
         </form>
     </div>
 </div>
@@ -345,7 +391,7 @@ $conn->close();
             <label for="fileToUpload">Upload New Image (optional):</label>
             <input type="file" id="fileToUpload" name="fileToUpload" accept="image/*"><br>
 
-            <button type="submits" name="update">Update Announcement</button>
+            <button type="submit" name="update">Update Announcement</button>
         </form>
     </div>
 </div>
