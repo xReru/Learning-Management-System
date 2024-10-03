@@ -1,27 +1,30 @@
 <?php
-    // Connect to database
-    include __DIR__ . '/connect.php';
+include 'connect.php';
 
-    // Check connection
-    if (!$conn) {
-      die("Connection failed: " . mysqli_connect_error());
-    }
+$courseName = $_POST['course_name'];
+$courseDescription = $_POST['course_description'];
+$courseCode = $_POST['course_code'];
 
-    // Get form data
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-      $course_name = $_POST["course_name"];
-      $course_description = $_POST["course_description"];
-      $course_code = $_POST["course_code"];
+// Insert the course into the database
+$sql = "INSERT INTO courses (course_name, course_description, course_code) VALUES ('$courseName', '$courseDescription', '$courseCode')";
 
-      // Insert data into database
-      $sql = "INSERT INTO courses (course_name, course_description, course_code) VALUES ('$course_name', '$course_description', '$course_code')";
+if ($conn->query($sql) === TRUE) {
+    $course_id = $conn->insert_id; // Get the inserted course ID
+    // Send a success response
+    echo json_encode([
+        'status' => 'success',
+        'message' => 'Course added successfully',
+        'course_id' => $course_id,
+        'course' => [
+            'course_id' => $course_id,
+            'course_name' => $courseName,
+            'course_description' => $courseDescription,
+            'course_code' => $courseCode
+        ]
+    ]);
+} else {
+    // Send an error response
+    echo json_encode(['status' => 'error', 'message' => 'Failed to add course']);
+}
 
-      if (mysqli_query($conn, $sql)) {
-        echo "Course added successfully!";
-      } else {
-        echo "Error adding course: " . mysqli_error($conn);
-      }
-    }
-
-    // Close connection
-    mysqli_close($conn);
+?>
