@@ -127,8 +127,7 @@ if ($userid) {
                     <input type="text" id="address" name="address" required>
                     <label for="email">E-mail:</label>
                     <input type="email" id="email" name="email" required>
-                    <label for="Role">Role:</label>
-                    <input type="Role" id="Role" name="Role" value="teacher" required readonly>
+                    <input type="Role" id="Role" name="Role" value="teacher" required hidden>
                     <button type="submit">Add Teacher</button>
                 </form>
             </div>
@@ -140,6 +139,8 @@ if ($userid) {
                 <span class="close-add-parent">&times;</span>
                 <h2>Add Parent Information</h2>
                 <form id="addParentForm">
+                    <label for="parentID">Parent ID:</label>
+                    <input type="text" id="parentID" name="parentID" required>
                     <label for="first_name">First Name:</label>
                     <input type="text" id="first_name" name="first_name" required>
                     <label for="last_name">Last Name:</label>
@@ -150,8 +151,7 @@ if ($userid) {
                     <input type="text" id="address" name="address" required>
                     <label for="email">E-mail:</label>
                     <input type="email" id="email" name="email" required>
-                    <label for="Role">Role:</label>
-                    <input type="Role" id="Role" name="Role" value="parent" required readonly>
+                    <input type="Role" id="Role" name="Role" value="parent" required hidden>
                     <button type="submit">Add Parent</button>
                 </form>
             </div>
@@ -183,7 +183,8 @@ if ($userid) {
                                     document.getElementById('adminPhoneNumber').value = data.phone;
                                     updateAdminModal.style.display = "block";
                                 } else if (role === 'student') {
-                                    document.getElementById('studentID').value = data.SID;
+                                    document.getElementById('SID').value = data.SID;
+                                    document.getElementById('studentID').value = data.studentID;
                                     document.getElementById('studentFirstName').value = data.first_name;
                                     document.getElementById('studentLastName').value = data.last_name;
                                     document.getElementById('studentPhoneNumber').value = data.phone_number;
@@ -191,7 +192,8 @@ if ($userid) {
                                     document.getElementById('studentAddress').value = data.address;
                                     updateStudentModal.style.display = "block";
                                 } else if (role === 'parent') {
-                                    document.getElementById('parentID').value = data.PID;
+                                    document.getElementById('PID').value = data.PID;
+                                    document.getElementById('parentID').value = data.parentID;
                                     document.getElementById('parentFirstName').value = data.first_name;
                                     document.getElementById('parentLastName').value = data.last_name;
                                     document.getElementById('parentPhoneNumber').value = data.phone_number;
@@ -199,7 +201,8 @@ if ($userid) {
                                     document.getElementById('parentAddress').value = data.address;
                                     updateParentModal.style.display = "block";
                                 } else if (role === 'teacher') {
-                                    document.getElementById('teacherID').value = data.TID;
+                                    document.getElementById('TID').value = data.TID;
+                                    document.getElementById('teacherID').value = data.teacherID;
                                     document.getElementById('teacherFirstName').value = data.first_name;
                                     document.getElementById('teacherLastName').value = data.last_name;
                                     document.getElementById('teacherPhoneNumber').value = data.phone_number;
@@ -257,9 +260,9 @@ if ($userid) {
                                     <button type='button' class='archive-btn btn-actions' data-id='${data.Aid}' data-role='admin'>Archive</button>
                                 </td>
                             </tr>`;
-                                } else {
+                                } else if (role === 'student') {
                                     newRow = `
-                            <tr data-id='${data[roleIDKey]}' data-role='${role}'>
+                            <tr data-id='${data.SID}'>
                                 <td class='${role}-first-name'>${data.first_name}</td>
                                 <td class='${role}-last-name'>${data.last_name}</td>
                                 <td class='${role}-phone-number'>${data.phone_number}</td>
@@ -267,7 +270,33 @@ if ($userid) {
                                 <td class='${role}-address'>${data.address}</td>
                                 <td>
                                     <button type='button' class='update-btn-${role} btn-actions' data-id='${data[roleIDKey]}'>Update</button>
-                                    <button type='button' class='archive-btn btn-actions' data-id='${data[roleIDKey]}'>Archive</button>
+                                    <button type='button' class='archive-btn btn-actions' data-id='${data[roleIDKey]}' data-role='student'>Archive</button>
+                                </td>
+                            </tr>`;
+                                } else if (role === 'teacher') {
+                                    newRow = `
+                            <tr data-id='${data.TID}'>
+                                <td class='${role}-first-name'>${data.first_name}</td>
+                                <td class='${role}-last-name'>${data.last_name}</td>
+                                <td class='${role}-phone-number'>${data.phone_number}</td>
+                                <td class='${role}-email'>${data.email}</td>
+                                <td class='${role}-address'>${data.address}</td>
+                                <td>
+                                    <button type='button' class='update-btn-${role} btn-actions' data-id='${data[roleIDKey]}'>Update</button>
+                                    <button type='button' class='archive-btn btn-actions' data-id='${data[roleIDKey]}' data-role='teacher'>Archive</button>
+                                </td>
+                            </tr>`;
+                                } else if (role === 'parent') {
+                                    newRow = `
+                            <tr data-id='${data.PID}'>
+                                <td class='${role}-first-name'>${data.first_name}</td>
+                                <td class='${role}-last-name'>${data.last_name}</td>
+                                <td class='${role}-phone-number'>${data.phone_number}</td>
+                                <td class='${role}-email'>${data.email}</td>
+                                <td class='${role}-address'>${data.address}</td>
+                                <td>
+                                    <button type='button' class='update-btn-${role} btn-actions' data-id='${data[roleIDKey]}'>Update</button>
+                                    <button type='button' class='archive-btn btn-actions' data-id='${data[roleIDKey]}' data-role='parent'>Archive</button>
                                 </td>
                             </tr>`;
                                 }

@@ -329,10 +329,10 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success') {
-                showToastArchive(userRole+' archived successfully');
+                showToast(userRole+' archived successfully');
                 rowElement.remove(); // Remove the archived row from the table
             } else {
-                showToastArchive('Failed to archive user');
+                showToast('Failed to archive user');
             }
             modal.style.display = 'none'; // Close modal
         })

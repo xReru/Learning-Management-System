@@ -15,7 +15,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $phone_number = intval(trim($_POST['phone_number'])); // Ensure phone number is an integer
     $address = htmlspecialchars(trim($_POST['address']));
     $email = htmlspecialchars(trim($_POST['email']));
-    //$password = password_hash(trim($_POST['password']), PASSWORD_BCRYPT);
     $role = 'Student'; // Set the role as Student
 
     // Prepare the SQL statement
@@ -37,7 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'email' => $email,
                 'phone_number' => $phone_number,
                 'address' => $address,
-                'student_id' => $student_id,
             ]);
         } else {
             echo json_encode(['success' => false, 'error' => $stmt->error]);

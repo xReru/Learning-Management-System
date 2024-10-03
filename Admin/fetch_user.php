@@ -17,25 +17,30 @@ if (isset($_GET['category']) && isset($_GET['id'])) {
             $sql = "SELECT PID, parentID, first_name, last_name, address, email, phone_number FROM tbl_parent WHERE PID = ?";
             break;
         case 'admin':
-                $sql = "SELECT Aid, Admin_ID, fname, lname, username, email, phone FROM tbl_admin WHERE Aid = ?";
-                break;
+            $sql = "SELECT Aid, Admin_ID, fname, lname, username, email, phone FROM tbl_admin WHERE Aid = ?";
+            break;
         default:
-            echo json_encode([]);
+            echo json_encode(['error' => 'Invalid category']);
             exit;
     }
 
     $stmt = $conn->prepare($sql);
+    if ($stmt === false) {
+        echo json_encode(['error' => 'Failed to prepare statement']);
+        exit;
+    }
+    
     $stmt->bind_param("i", $id);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
-        echo json_encode($result->fetch_assoc());
+        $data = $result->fetch_assoc();
+        echo json_encode($data);  // Return the fetched data
     } else {
-        echo json_encode([]);
+        echo json_encode(['error' => 'No records found']);
     }
     $stmt->close();
 }
 
 $conn->close();
-
