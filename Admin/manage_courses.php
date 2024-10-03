@@ -7,11 +7,11 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     exit;
 } else if (isset($_SESSION['AID'])) {
     $userid = $_SESSION['AID'];
-    
+
     $getrecord = mysqli_query($conn, "SELECT * FROM tbl_admin WHERE AID ='$userid'");
     while ($rowedit = mysqli_fetch_assoc($getrecord)) {
         $type = $rowedit['Role'];
-        $name = $rowedit['lname']." ".$rowedit['lname'];
+        $name = $rowedit['lname'] . " " . $rowedit['lname'];
     }
 }
 ?>
@@ -28,39 +28,57 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 </head>
 <style>
     table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-    position: relative;
-}
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        position: relative;
+    }
 
-table, th, td {
-    border: 1px solid #ddd;
-}
+    table,
+    th,
+    td {
+        border: 1px solid #ddd;
+    }
 
-th {
-    background-color: #b40404;
-    color: white;
-    padding: 12px;
-    text-align: left;
-    position: sticky;
-    top: 0;
-    z-index: 2;
-}
+    th {
+        background-color: #b40404;
+        color: white;
+        padding: 12px;
+        text-align: left;
+        position: sticky;
+        top: 0;
+        z-index: 2;
+    }
 
-td {
-    padding: 12px;
-    text-align: left;
-}
+    td {
+        padding: 12px;
+        text-align: left;
+    }
 
-tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-    </style>
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .toast {
+        position: fixed;
+        top: 5%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #219138;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        opacity: 1;
+        transition: opacity 0.3s ease;
+        /* Smooth fade-in and fade-out */
+        z-index: 9999;
+        /* Ensure the toast is on top */
+    }
+</style>
+
 <body>
-
-<form action="logout.php" method="post">
-<?php include_once 'navs/nav.php'; ?>
+    <form action="logout.php" method="post">
+        <?php include_once 'navs/nav.php'; ?>
     </form>
 
     <div class="main-content">
@@ -166,13 +184,13 @@ tr:nth-child(even) {
                 echo "<table>";
                 echo "<tr><th>Course Name</th><th>Course Description</th><th>Course Code</th><th>Actions</th></tr>";
                 while ($row = mysqli_fetch_assoc($result)) {
-                    echo "<tr>";
+                    echo "<tr data-id=\"" . htmlspecialchars($row['course_id']) . "\">";
                     echo "<td>" . htmlspecialchars($row["course_name"]) . "</td>";
                     echo "<td>" . htmlspecialchars($row["course_description"]) . "</td>";
                     echo "<td>" . htmlspecialchars($row["course_code"]) . "</td>";
                     echo "<td>";
                     echo "<button class='btn' onclick='openEditModal(" . htmlspecialchars(json_encode($row)) . ")'>Edit</button> ";
-                    echo "<button class='btn btn-remove' onclick='location.href=\"remove_course.php?id=" . $row["course_id"] . "\"'>Archive</button>";
+                    echo "<button class='btn btn-remove' onclick='confirmArchive(" . htmlspecialchars($row["course_id"]) . ")'>Archive</button>";
                     echo "</td>";
                     echo "</tr>";
                 }
@@ -186,6 +204,23 @@ tr:nth-child(even) {
             ?>
         </div>
     </div>
+    <!-- Remove Confirmation Modal -->
+    <div id="removeConfirmationModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Confirm Removal</h2>
+                <span id="closeRemoveModalBtn" style="cursor: pointer;">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to archive this course?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-close" id="cancelRemoveBtn">Cancel</button>
+                <button class="btn-remove" id="confirmRemoveBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+    <div id="toast" class="toast" style="display:none;"></div>
     <script src="courses_script.js"></script>
 </body>
 

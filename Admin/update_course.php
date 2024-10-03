@@ -14,13 +14,16 @@ $stmt->bind_param('sssi', $course_name, $course_description, $course_code, $cour
 
 // Execute the query and check for success
 if ($stmt->execute()) {
-    echo "Course updated successfully!";
+    echo json_encode(["status" => "success", "message" => "Course updated successfully!", "course" => [
+        "course_id" => $course_id,
+        "course_name" => $course_name,
+        "course_description" => $course_description,
+        "course_code" => $course_code
+    ]]);
 } else {
-    echo "Error updating course: " . $conn->error;
+    echo json_encode(["status" => "error", "message" => "Error updating course: " . $conn->error]);
 }
 
 // Close the statement and connection
 $stmt->close();
 $conn->close();
-
-
