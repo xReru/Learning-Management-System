@@ -1,11 +1,11 @@
-<?php 
+<?php
 include "connect.php";
 session_start();
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header("Location: ../login.php");
     exit;
-} 
+}
 
 $userid = $_SESSION['AID'] ?? null;
 if ($userid) {
@@ -17,6 +17,7 @@ if ($userid) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,10 +25,9 @@ if ($userid) {
     <link rel="icon" href="../images/logasac.png">
     <link rel="stylesheet" href="../css_admin/manage_account.css">
 </head>
+
 <body>
-    <form action="logout.php" method="post">
-        <?php include_once 'navs/nav.php'; ?>
-    </form>
+    <?php include_once 'navs/nav.php'; ?>
     <div class="whitebox">
         <p>Manage Accounts</p>
         <div class="button-container">
@@ -229,7 +229,7 @@ if ($userid) {
 
         document.addEventListener('DOMContentLoaded', () => {
             setupButtonListeners(); // Initial call to set up listeners
-            
+
             const roles = ['admin', 'student', 'parent', 'teacher'];
 
             roles.forEach(role => {
@@ -309,7 +309,7 @@ if ($userid) {
                                 showToast(`${role.charAt(0).toUpperCase() + role.slice(1)} added successfully`);
 
                                 // Close the modal after successful submission
-                                document.getElementById(`${role}-modal`).style.display = "none"; 
+                                document.getElementById(`${role}-modal`).style.display = "none";
                             } else {
                                 alert(`Failed to add ${role}`);
                             }
@@ -347,4 +347,5 @@ if ($userid) {
         });
     </script>
 </body>
+
 </html>

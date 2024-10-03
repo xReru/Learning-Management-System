@@ -1,27 +1,29 @@
 <?php
-include "../connect.php";
 session_start();
+include "../connect.php"; // Ensure this path is correct
 
+// Check if the user is logged in
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header("refresh:0; ../login.php");
+    header("Location: ../login.php"); // Redirect to login if not logged in
     exit;
-} else if (isset($_SESSION['AID'])) {
-    $userid = $_SESSION['AID'];
-    
-    $getrecord = mysqli_query($conn, "SELECT * FROM tbl_admin WHERE AID ='$userid'");
-    while ($rowedit = mysqli_fetch_assoc($getrecord)) {
-        $type = $rowedit['Role'];
-        $name = $rowedit['lname']." ".$rowedit['lname'];
-    }
 }
-if(isset($_POST['logout']))
-{
-	#$viewloginl = "Insert into tbl_audithistory (e_name,e_action,e_date) values ('$name','Logged out',NOW())";
-	
-	#$result1 = $config->query($viewloginl);
-	session_destroy();
-	unset($_SESSION['Aid']);
-	header('Location:../index.php');
 
+// If the user clicks the logout button
+if (isset($_POST['logout'])) {
+    // Optionally log the logout action in your audit history
+    // Assuming $name is defined somewhere in your code
+    $viewloginl = "INSERT INTO tbl_audithistory (e_name, e_action, e_date) VALUES ('$name', 'Logged out', NOW())";
+    // Uncomment and execute this if you have the config for $config
+    // $result1 = $config->query($viewloginl);
+    
+    // Destroy the session and unset session variables
+    session_destroy();
+    unset($_SESSION['Aid']);
+    
+    // Redirect back to the login page
+    header('Location: ../index.php'); // Redirect to login
+    exit;
 }
 ?>
+
+

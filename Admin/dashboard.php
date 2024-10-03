@@ -22,7 +22,6 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         <title>Admin Dashboard</title>
         <link rel="icon" href="../images/logasac.png">
         <body>
-        <form action="logout.php" method="post">
 <?php include_once 'navs/nav.php'; ?>
     </form>
         
