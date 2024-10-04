@@ -307,7 +307,8 @@ if ($userid) {
                                 setupButtonListeners(); // Reattach event listeners
 
                                 showToast(`${role.charAt(0).toUpperCase() + role.slice(1)} added successfully`);
-
+                                document.getElementById(`add${role.charAt(0).toUpperCase() + role.slice(1)}Form`).reset();
+                                
                                 // Close the modal after successful submission
                                 document.getElementById(`${role}-modal`).style.display = "none";
                             } else {
