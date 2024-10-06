@@ -263,54 +263,62 @@ if ($userid) {
                                 } else if (role === 'student') {
                                     newRow = `
                             <tr data-id='${data.SID}'>
-                                <td class='${role}-first-name'>${data.first_name}</td>
-                                <td class='${role}-last-name'>${data.last_name}</td>
-                                <td class='${role}-phone-number'>${data.phone_number}</td>
-                                <td class='${role}-email'>${data.email}</td>
-                                <td class='${role}-address'>${data.address}</td>
+                                <td class='student-first-name'>${data.first_name}</td>
+                                <td class='student-last-name'>${data.last_name}</td>
+                                <td class='student-phone-number'>${data.phone_number}</td>
+                                <td class='student-email'>${data.email}</td>
+                                <td class='student-address'>${data.address}</td>
                                 <td>
-                                    <button type='button' class='update-btn-${role} btn-actions' data-id='${data[roleIDKey]}'>Update</button>
+                                    <button type='button' class='update-btn-student btn-actions' data-id='${data[roleIDKey]}'>Update</button>
                                     <button type='button' class='archive-btn btn-actions' data-id='${data[roleIDKey]}' data-role='student'>Archive</button>
                                 </td>
                             </tr>`;
                                 } else if (role === 'teacher') {
                                     newRow = `
                             <tr data-id='${data.TID}'>
-                                <td class='${role}-first-name'>${data.first_name}</td>
-                                <td class='${role}-last-name'>${data.last_name}</td>
-                                <td class='${role}-phone-number'>${data.phone_number}</td>
-                                <td class='${role}-email'>${data.email}</td>
-                                <td class='${role}-address'>${data.address}</td>
+                                <td class='teacher-first-name'>${data.first_name}</td>
+                                <td class='teacher-last-name'>${data.last_name}</td>
+                                <td class='teacher-phone-number'>${data.phone_number}</td>
+                                <td class='teacher-email'>${data.email}</td>
+                                <td class='teacher-address'>${data.address}</td>
                                 <td>
-                                    <button type='button' class='update-btn-${role} btn-actions' data-id='${data[roleIDKey]}'>Update</button>
+                                    <button type='button' class='update-btn-teacher btn-actions' data-id='${data[roleIDKey]}'>Update</button>
                                     <button type='button' class='archive-btn btn-actions' data-id='${data[roleIDKey]}' data-role='teacher'>Archive</button>
                                 </td>
                             </tr>`;
                                 } else if (role === 'parent') {
                                     newRow = `
                             <tr data-id='${data.PID}'>
-                                <td class='${role}-first-name'>${data.first_name}</td>
-                                <td class='${role}-last-name'>${data.last_name}</td>
-                                <td class='${role}-phone-number'>${data.phone_number}</td>
-                                <td class='${role}-email'>${data.email}</td>
-                                <td class='${role}-address'>${data.address}</td>
+                                <td class='parent-first-name'>${data.first_name}</td>
+                                <td class='parent-last-name'>${data.last_name}</td>
+                                <td class='parent-phone-number'>${data.phone_number}</td>
+                                <td class='parent-email'>${data.email}</td>
+                                <td class='parent-address'>${data.address}</td>
                                 <td>
-                                    <button type='button' class='update-btn-${role} btn-actions' data-id='${data[roleIDKey]}'>Update</button>
+                                    <button type='button' class='update-btn-parent btn-actions' data-id='${data[roleIDKey]}'>Update</button>
                                     <button type='button' class='archive-btn btn-actions' data-id='${data[roleIDKey]}' data-role='parent'>Archive</button>
                                 </td>
                             </tr>`;
                                 }
 
                                 const tableBody = document.querySelector(`#${role}Table tbody`);
-                                tableBody.insertAdjacentHTML('beforeend', newRow);
 
-                                setupButtonListeners(); // Reattach event listeners
+                                if (tableBody) {
+                                    // Insert the new row into the table if it exists
+                                    tableBody.insertAdjacentHTML('beforeend', newRow);
 
-                                showToast(`${role.charAt(0).toUpperCase() + role.slice(1)} added successfully`);
+                                    setupButtonListeners(); // Reattach event listeners
+
+                                    showToast(`${role.charAt(0).toUpperCase() + role.slice(1)} added successfully`);
+                                    document.getElementById(`${role}-modal`).style.display = "none";
+                                } else {
+                                    // If table doesn't exist, close the modal and display a toast
+                                    document.getElementById(`${role}-modal`).style.display = "none";
+                                    showToast(`${role.charAt(0).toUpperCase() + role.slice(1)} added successfully`);
+                                }
+
+                                // Reset the form and close the modal
                                 document.getElementById(`add${role.charAt(0).toUpperCase() + role.slice(1)}Form`).reset();
-                                
-                                // Close the modal after successful submission
-                                document.getElementById(`${role}-modal`).style.display = "none";
                             } else {
                                 alert(`Failed to add ${role}`);
                             }
@@ -321,6 +329,7 @@ if ($userid) {
                 });
             });
         });
+
 
         // Confirm archive action
         confirmButton.addEventListener('click', function () {
